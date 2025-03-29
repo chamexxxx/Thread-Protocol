@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpellSystem.Data
@@ -8,6 +9,6 @@ namespace SpellSystem.Data
         public string ItemName;
         public bool IsFeminine;
         
-        public PropertyType[] Properties;
+        public List<PropertyType> Properties;
     }
 }

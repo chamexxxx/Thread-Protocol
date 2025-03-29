@@ -387,7 +387,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00048005625}
+  m_AnchoredPosition: {x: 0, y: 0.00032790317}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &64833801
@@ -1190,6 +1190,7 @@ MonoBehaviour:
   spellPanel: {fileID: 1849277052}
   spellPanelOpened: 0
   propertyDatabase: {fileID: 11400000, guid: 1a8258147d1843c4d945b4d9b4151d87, type: 2}
+  freeCameraMouseLook: {fileID: 1666144845}
 --- !u!1 &494335607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2046,7 +2047,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 50357741}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99997
+  m_Size: 0.99999845
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2490,6 +2491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1024293315}
   - component: {fileID: 1024293313}
+  - component: {fileID: 1024293316}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2519,12 +2521,27 @@ Transform:
   m_GameObject: {fileID: 1024293312}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 959.3085, y: 460.6582, z: -6.2142067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1024293316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024293312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ddf68c655a4c9186418f14ea56c190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _searchRadius: 500
+  _propertyDatabase: {fileID: 11400000, guid: 1a8258147d1843c4d945b4d9b4151d87, type: 2}
+  _playerProgress: {fileID: 1024293313}
 --- !u!1 &1057254522
 GameObject:
   m_ObjectHideFlags: 0
@@ -4104,6 +4121,7 @@ MonoBehaviour:
   addPropertyButton: {fileID: 52414674}
   bindButton: {fileID: 1902447190}
   propertyPrefab: {fileID: 2483954827705564837, guid: c6d4f50f3c88420449bb6699a59db915, type: 3}
+  propertyApplier: {fileID: 1024293316}
 --- !u!1 &1902447188
 GameObject:
   m_ObjectHideFlags: 0

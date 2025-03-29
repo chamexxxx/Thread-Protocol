@@ -19,6 +19,7 @@ namespace SpellSystem.Views
         private List<string> properties = new List<string>(); // Список свойств
         private List<GameObject> propertyInstances = new List<GameObject>(); // Список экземпляров свойств
 
+        [SerializeField] private PropertyApplier propertyApplier;
         void Start()
         {
             // Назначаем обработчики кнопок
@@ -109,7 +110,7 @@ namespace SpellSystem.Views
                 Debug.Log($"- {property}");
             }
             
-            // Здесь можно добавить дополнительную логику обработки
+            propertyApplier.ApplyPropertiesToObject(title, properties.ToArray());
         }
     }
 }

@@ -46,6 +46,10 @@ namespace SpellSystem
         
         [SerializeField] private PropertyDatabase propertyDatabase;
         
+        
+        [SerializeField] private FreeCameraMouseLook freeCameraMouseLook;
+        
+        
         private void Start()
         {
             originalDotColor = centerDot.color;
@@ -79,7 +83,9 @@ namespace SpellSystem
                 // Переключаем состояние панели
                 studiedObjectsPanelOpened = !studiedObjectsPanelOpened;
                 studiedObjectsPanel.gameObject.SetActive(studiedObjectsPanelOpened);
-        
+                
+                freeCameraMouseLook.SetLookEnabled(studiedObjectsPanelOpened);
+                
                 // Если панель открылась, обновляем список предметов
                 if (studiedObjectsPanelOpened)
                 {
@@ -93,6 +99,8 @@ namespace SpellSystem
                 spellPanelOpened = !spellPanelOpened;
                 spellPanel.gameObject.SetActive(spellPanelOpened);
         
+                freeCameraMouseLook.SetLookEnabled(studiedObjectsPanelOpened);
+                
                 // Если панель открылась, Отчищаем все поля
                 if (spellPanelOpened)
                 {

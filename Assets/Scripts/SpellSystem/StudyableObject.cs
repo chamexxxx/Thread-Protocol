@@ -27,7 +27,7 @@ namespace SpellSystem
             if (itemData == null || itemData.Properties == null)
                 return false;
 
-            return System.Array.Exists(itemData.Properties, p => p == propertyType);
+            return itemData.Properties.Contains(propertyType);
         }
         
         /*private bool HasProperty(PropertyType propertyName)
