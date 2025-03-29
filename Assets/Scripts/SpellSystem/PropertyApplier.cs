@@ -10,6 +10,31 @@ namespace SpellSystem
         [SerializeField] private float _searchRadius = 5f;
         [SerializeField] private PropertyDatabase _propertyDatabase;
         [SerializeField] private PlayerProgress _playerProgress;
+        
+        private void Start()
+        {
+            ApplyPropertiesToAllObjects();
+        }
+
+        public void ApplyPropertiesToAllObjects()
+        {
+            StudyableObject[] allObjects = FindObjectsOfType<StudyableObject>();
+            foreach (StudyableObject obj in allObjects)
+            {
+                ApplyObjectProperties(obj);
+            }
+        }
+
+        private void ApplyObjectProperties(StudyableObject targetObject)
+        {
+            if (targetObject.itemData == null || targetObject.itemData.Properties == null)
+                return;
+
+            foreach (PropertyType propertyType in targetObject.itemData.Properties)
+            {
+                targetObject.CheckPropertyController(propertyType);
+            }
+        }
 
         public void ApplyPropertiesToObject(StudyableObject currentObject, string[] propertyNames)
         {
@@ -90,7 +115,8 @@ namespace SpellSystem
             // 5. Добавляем свойство (если его ещё нет)
             if (!targetObject.itemData.Properties.Contains(propertyInfo.Type))
             {
-                targetObject.itemData.Properties.Add(propertyInfo.Type);
+                targetObject.AddProperty(propertyInfo.Type);
+                
                 Debug.Log($"Добавлено свойство '{propertyName}' к объекту '{targetObject.itemData.ItemName}'");
             }
         }
@@ -111,7 +137,9 @@ namespace SpellSystem
             // Удаляем антонимы из оригинального списка
             foreach (var antonym in antonymsToRemove)
             {
-                targetObject.itemData.Properties.Remove(antonym);
+                
+                
+                targetObject.RemoveProperty(antonym);
                 var propInfo = _propertyDatabase.GetPropertyInfo(antonym);
                 Debug.Log($"Удален антоним '{propInfo?.DisplayName}' при добавлении нового свойства");
             }

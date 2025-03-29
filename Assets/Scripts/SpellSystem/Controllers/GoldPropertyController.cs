@@ -1,6 +1,8 @@
-﻿namespace SpellSystem.Controllers
+﻿using UnityEngine;
+
+namespace SpellSystem.Controllers
 {
-    public class GoldPropertyController
+    public class GoldPropertyController : MonoBehaviour
     {
         
     }
