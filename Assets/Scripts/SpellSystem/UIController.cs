@@ -1,4 +1,5 @@
-﻿using SpellSystem.Data;
+﻿using DefaultNamespace;
+using SpellSystem.Data;
 using SpellSystem.Views;
 using TMPro;
 using Unity.VisualScripting;
@@ -47,9 +48,6 @@ namespace SpellSystem
         [SerializeField] private PropertyDatabase propertyDatabase;
         
         
-        [SerializeField] private FreeCameraMouseLook freeCameraMouseLook;
-        
-        
         private void Start()
         {
             originalDotColor = centerDot.color;
@@ -84,7 +82,7 @@ namespace SpellSystem
                 studiedObjectsPanelOpened = !studiedObjectsPanelOpened;
                 studiedObjectsPanel.gameObject.SetActive(studiedObjectsPanelOpened);
                 
-                freeCameraMouseLook.SetLookEnabled(studiedObjectsPanelOpened);
+                CursorController.Instance.SetLookEnabled(studiedObjectsPanelOpened);
                 
                 // Если панель открылась, обновляем список предметов
                 if (studiedObjectsPanelOpened)
@@ -99,7 +97,7 @@ namespace SpellSystem
                 spellPanelOpened = !spellPanelOpened;
                 spellPanel.gameObject.SetActive(spellPanelOpened);
         
-                freeCameraMouseLook.SetLookEnabled(studiedObjectsPanelOpened);
+                CursorController.Instance.SetLookEnabled(studiedObjectsPanelOpened);
                 
                 // Если панель открылась, Отчищаем все поля
                 if (spellPanelOpened)

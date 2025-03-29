@@ -19,10 +19,6 @@ namespace SpellSystem
 
         void Start()
         {
-            // Фиксируем курсор в центре экрана
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            
             // Инициализируем текущие углы поворота
             Vector3 currentRotation = transform.localEulerAngles;
             xRotation = currentRotation.x;
@@ -44,14 +40,6 @@ namespace SpellSystem
             
             // Применяем вращение
             transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        }
-
-        // Для временного отключения управления
-        public void SetLookEnabled(bool enabled)
-        {
-            enabled = enabled;
-            Cursor.lockState = enabled ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !enabled;
         }
     }
 }
