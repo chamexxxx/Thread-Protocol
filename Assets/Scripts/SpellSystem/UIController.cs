@@ -1,0 +1,206 @@
+﻿using SpellSystem.Data;
+using SpellSystem.Views;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace SpellSystem
+{
+    public class UIController : MonoBehaviour
+    {
+        public GameObject studyPromptUI;
+        public TMP_Text studyPromptText;
+        public TMP_Text studiedItemsText;
+        public Camera playerCamera;
+        public float maxStudyDistance = 5f;
+        public LayerMask studyableLayer;
+
+        private StudyableObject currentObject;
+        private bool wasPromptVisible = false;
+
+        public Image centerDot;
+        public Color highlightColor = Color.green;
+        
+        private Color originalDotColor;
+        
+        
+        
+        [SerializeField] private Transform studiedItemsParent;
+        
+        
+        [SerializeField] private GameObject objectNamePrefab;
+        [SerializeField] private GameObject propertyViewPrefab;
+        [SerializeField] private GameObject dividerViewPrefab;
+        [SerializeField] private GameObject simpleLineViewPrefab;
+        
+        
+        
+        [SerializeField] private Transform eStadyItemsParent;
+        
+        [SerializeField] private Transform studiedObjectsPanel;
+        [SerializeField] private bool studiedObjectsPanelOpened = false;
+        
+        [SerializeField] private PropertyDatabase propertyDatabase;
+        
+        private void Start()
+        {
+            originalDotColor = centerDot.color;
+            
+            studyPromptUI.SetActive(false);
+            UpdateStudiedItemsUI();
+            
+            if (playerCamera == null)
+            {
+                playerCamera = Camera.main;
+            }
+            
+            studiedObjectsPanel.gameObject.SetActive(false);
+            
+        }
+
+        private void Update()
+        {
+            CheckForStudyableObjects();
+            
+            if (currentObject != null && Input.GetKeyDown(KeyCode.E))
+            {
+                StudyItem(currentObject);
+                studyPromptUI.SetActive(false);
+                currentObject = null;
+            }
+            
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                // Переключаем состояние панели
+                studiedObjectsPanelOpened = !studiedObjectsPanelOpened;
+                studiedObjectsPanel.gameObject.SetActive(studiedObjectsPanelOpened);
+        
+                // Если панель открылась, обновляем список предметов
+                if (studiedObjectsPanelOpened)
+                {
+                    UpdateStudiedItemsUI();
+                }
+            }
+        }
+
+        private void CheckForStudyableObjects()
+        {
+            Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, maxStudyDistance, studyableLayer))
+            {
+                StudyableObject studyable = hit.collider.GetComponent<StudyableObject>();
+                if (studyable != null)
+                {
+                    centerDot.color = highlightColor;
+                    
+                    currentObject = studyable;
+
+                    foreach (Transform child in eStadyItemsParent)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                    if (currentObject.Studed)
+                    {
+                        var propertyViewHeader = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                        propertyViewHeader.Name.text = $"Изучено [{studyable.itemData.ItemName}]";
+                        foreach (var property in currentObject.itemData.Properties)
+                        {
+                            var propertyInfo = GetPropertyInfo(property);
+                            var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+
+                            if (currentObject.itemData.IsFeminine)
+                            {
+                                propertyView.Name.text = $"  * {propertyInfo.DisplayFeminineName}";
+                            }
+                            else
+                            {
+                                propertyView.Name.text = $"  * {propertyInfo.DisplayName}";
+                            }
+                            
+                            
+                        }
+                    }
+                    else
+                    {
+                        var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                        propertyView.Name.text = $"[E] Изучить [{studyable.itemData.ItemName}]";
+                    }
+                    
+                    
+                    
+                    studyPromptUI.SetActive(true);
+                    wasPromptVisible = true;
+                    return;
+                }
+                else
+                {
+                    centerDot.color = originalDotColor;
+                }
+            }
+            else
+            {
+                centerDot.color = originalDotColor;
+            }
+
+            if (wasPromptVisible)
+            {
+                studyPromptUI.SetActive(false);
+                currentObject = null;
+                wasPromptVisible = false;
+            }
+        }
+
+        public void StudyItem(StudyableObject studyableObject)
+        {
+            PlayerProgress.Instance.AddStudiedItem(studyableObject.itemData);
+            studyableObject.Studed = true;
+            UpdateStudiedItemsUI();
+        }
+
+        private void UpdateStudiedItemsUI()
+        {
+            // Очищаем предыдущие элементы
+            foreach (Transform child in studiedItemsParent.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (var item in PlayerProgress.Instance.studiedItems)
+            {
+                // Создаем префаб для предмета
+                var itemView = Instantiate(objectNamePrefab, studiedItemsParent.transform).GetComponent<ObjectView>();
+                itemView.Name.text = $"- {item.ItemName}";
+        
+                // Добавляем свойства предмета
+                foreach (var property in item.Properties)
+                {
+                    var propertyInfo = GetPropertyInfo(property);
+                    
+                    var propertyView = Instantiate(propertyViewPrefab, studiedItemsParent.transform).GetComponent<PropertyView>();
+                    
+                    if (item.IsFeminine)
+                    {
+                        propertyView.Name.text = $"  * {propertyInfo.DisplayFeminineName}";
+                    }
+                    else
+                    {
+                        propertyView.Name.text = $"  * {propertyInfo.DisplayName}";
+                    }
+                }
+                
+                var itemDividerView = Instantiate(dividerViewPrefab, studiedItemsParent.transform);
+            }
+        }
+        
+        public PropertyDatabase.PropertyInfo GetPropertyInfo(PropertyType type)
+        {
+            return propertyDatabase.GetPropertyInfo(type);
+        }
+        
+        
+    }
+}
