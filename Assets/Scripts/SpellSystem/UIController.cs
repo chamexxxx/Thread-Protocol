@@ -41,7 +41,14 @@ namespace SpellSystem
         [SerializeField] private Transform studiedObjectsPanel;
         [SerializeField] private bool studiedObjectsPanelOpened = false;
         
+        [SerializeField] private Transform spellPanel;
+        [SerializeField] private bool spellPanelOpened = false;
+        
         [SerializeField] private PropertyDatabase propertyDatabase;
+        
+        
+        [SerializeField] private FreeCameraMouseLook freeCameraMouseLook;
+        
         
         private void Start()
         {
@@ -56,6 +63,7 @@ namespace SpellSystem
             }
             
             studiedObjectsPanel.gameObject.SetActive(false);
+            spellPanel.gameObject.SetActive(false);
             
         }
 
@@ -75,11 +83,28 @@ namespace SpellSystem
                 // Переключаем состояние панели
                 studiedObjectsPanelOpened = !studiedObjectsPanelOpened;
                 studiedObjectsPanel.gameObject.SetActive(studiedObjectsPanelOpened);
-        
+                
+                freeCameraMouseLook.SetLookEnabled(studiedObjectsPanelOpened);
+                
                 // Если панель открылась, обновляем список предметов
                 if (studiedObjectsPanelOpened)
                 {
                     UpdateStudiedItemsUI();
+                }
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                // Переключаем состояние панели
+                spellPanelOpened = !spellPanelOpened;
+                spellPanel.gameObject.SetActive(spellPanelOpened);
+        
+                freeCameraMouseLook.SetLookEnabled(studiedObjectsPanelOpened);
+                
+                // Если панель открылась, Отчищаем все поля
+                if (spellPanelOpened)
+                {
+                    spellPanel.gameObject.GetComponentInChildren<SpellCreator>().ClearFields();
                 }
             }
         }
