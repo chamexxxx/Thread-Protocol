@@ -3,8 +3,6 @@ using System.Linq;
 using SpellSystem.Data;
 using UnityEngine;
 
-
-
 namespace SpellSystem
 {
     public class PropertyApplier : MonoBehaviour
@@ -13,21 +11,34 @@ namespace SpellSystem
         [SerializeField] private PropertyDatabase _propertyDatabase;
         [SerializeField] private PlayerProgress _playerProgress;
 
-        public void ApplyPropertiesToObject(string objectName, string[] propertyNames)
+        public void ApplyPropertiesToObject(StudyableObject currentObject, string[] propertyNames)
         {
-            // 1. Поиск объекта на сцене
-            StudyableObject targetObject = FindStudyableObject(objectName);
-            if (targetObject == null)
-            {
-                Debug.LogError($"Объект с именем '{objectName}' не найден в радиусе {_searchRadius} метров!");
-                return;
-            }
+            StudyableObject targetObject = currentObject;
 
-            // 2. Проверка и добавление каждого свойства
+            for (int i = 0; i < propertyNames.Length; i++)
+            {
+                var prop1 = GetPropertyInfoByName(propertyNames[i]);
+                for (int j = i + 1; j < propertyNames.Length; j++)
+                {
+                    var prop2 = GetPropertyInfoByName(propertyNames[j]);
+                    if (_propertyDatabase.AreAntonyms(prop1.Type, prop2.Type))
+                    {
+                        Debug.LogError($"Конфликт свойств: '{prop1.DisplayName}' и '{prop2.DisplayName}' являются антонимами!");
+                        return;
+                    }
+                }
+            }
+            // Вызов TryAddPropertyToObject для каждого свойства
             foreach (string propertyName in propertyNames)
             {
                 TryAddPropertyToObject(targetObject, propertyName);
             }
+        }
+        
+        private PropertyDatabase.PropertyInfo GetPropertyInfoByName(string name)
+        {
+            return _propertyDatabase.AllProperties
+                .FirstOrDefault(p => p.DisplayName == name || p.DisplayFeminineName == name);
         }
 
         private StudyableObject FindStudyableObject(string objectName)

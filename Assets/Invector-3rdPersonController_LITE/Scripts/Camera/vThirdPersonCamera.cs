@@ -127,21 +127,21 @@ public class vThirdPersonCamera : MonoBehaviour
     public void RotateCamera(float x, float y)
     {
         // free rotation 
-        mouseX += x * xMouseSensitivity;
-        mouseY -= y * yMouseSensitivity;
-
-        movementSpeed.x = x;
-        movementSpeed.y = -y;
         if (!lockCamera)
         {
+            mouseX += x * xMouseSensitivity;
+            mouseY -= y * yMouseSensitivity;
+
+            movementSpeed.x = x;
+            movementSpeed.y = -y;
             mouseY = vExtensions.ClampAngle(mouseY, yMinLimit, yMaxLimit);
             mouseX = vExtensions.ClampAngle(mouseX, xMinLimit, xMaxLimit);
         }
-        else
+        /*else
         {
-            mouseY = currentTarget.root.localEulerAngles.x;
-            mouseX = currentTarget.root.localEulerAngles.y;
-        }
+            // mouseY = currentTarget.root.localEulerAngles.x;
+            // mouseX = currentTarget.root.localEulerAngles.y;
+        }*/
     }
 
     /// <summary>
