@@ -1,8 +1,6 @@
 ﻿using DefaultNamespace;
 using SpellSystem.Data;
 using SpellSystem.Views;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +9,6 @@ namespace SpellSystem
     public class UIController : MonoBehaviour
     {
         public GameObject studyPromptUI;
-        public TMP_Text studyPromptText;
-        public TMP_Text studiedItemsText;
         public Camera playerCamera;
         public float maxStudyDistance = 5f;
         public LayerMask studyableLayer;
@@ -21,21 +17,16 @@ namespace SpellSystem
         private bool wasPromptVisible = false;
 
         public Image centerDot;
-        public Color highlightColor = Color.green;
+        [SerializeField] public Color highlightColor = Color.green;
         
         private Color originalDotColor;
         
-        
-        
         [SerializeField] private Transform studiedItemsParent;
-        
         
         [SerializeField] private GameObject objectNamePrefab;
         [SerializeField] private GameObject propertyViewPrefab;
         [SerializeField] private GameObject dividerViewPrefab;
         [SerializeField] private GameObject simpleLineViewPrefab;
-        
-        
         
         [SerializeField] private Transform eStadyItemsParent;
         
@@ -144,7 +135,6 @@ namespace SpellSystem
                                 propertyView.Name.text = $"  * {propertyInfo.DisplayName}";
                             }
                             
-                            
                         }
                     }
                     else
@@ -152,8 +142,6 @@ namespace SpellSystem
                         var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
                         propertyView.Name.text = $"[E] Изучить [{studyable.itemData.ItemName}]";
                     }
-                    
-                    
                     
                     studyPromptUI.SetActive(true);
                     wasPromptVisible = true;
