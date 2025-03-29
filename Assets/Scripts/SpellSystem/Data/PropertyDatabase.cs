@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SpellSystem.Controllers;
 using UnityEngine;
 
 namespace SpellSystem.Data
@@ -14,6 +15,7 @@ namespace SpellSystem.Data
             public string DisplayFeminineName;
             public Sprite Icon;
             public List<PropertyType> Antonyms;
+            public MonoBehaviour IPropertyController;
         }
 
         public List<PropertyInfo> AllProperties;

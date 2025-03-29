@@ -2,7 +2,7 @@
 
 namespace SpellSystem.Controllers
 {
-    public class StonePropertyController : MonoBehaviour
+    public class SteelPropertyController : MonoBehaviour
     {
         
     }
