@@ -30,24 +30,5 @@ namespace SpellSystem
             return itemData.Properties.Contains(propertyType);
         }
         
-        /*private bool HasProperty(PropertyType propertyName)
-        {
-            // Проверяем, что itemData и Properties существуют
-            if (itemData == null || itemData.Properties == null)
-            {
-                return false;
-            }
-
-            // Ищем свойство с нужным именем
-            foreach (var property in itemData.Properties)
-            {
-                if (property == propertyName)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }*/
     }
 }

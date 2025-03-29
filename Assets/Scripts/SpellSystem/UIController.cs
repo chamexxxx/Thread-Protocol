@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace;
+using Invector.vCharacterController;
 using SpellSystem.Data;
 using SpellSystem.Views;
 using UnityEngine;
@@ -37,7 +38,12 @@ namespace SpellSystem
         [SerializeField] private bool spellPanelOpened = false;
         
         [SerializeField] private PropertyDatabase propertyDatabase;
+        [SerializeField] private vThirdPersonCamera vThirdPersonCamera;
+        [SerializeField] private vThirdPersonInput vThirdPersonInput;
         
+        private bool centerDotOnCanSpellingObject = false;
+        
+        [SerializeField] private SpellCreator _spellCreator ;
         
         private void Start()
         {
@@ -82,21 +88,38 @@ namespace SpellSystem
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.Tab) && centerDotOnCanSpellingObject)
             {
                 // Переключаем состояние панели
                 spellPanelOpened = !spellPanelOpened;
                 spellPanel.gameObject.SetActive(spellPanelOpened);
+                CursorController.Instance.SetLookEnabled(spellPanelOpened);
         
                 CursorController.Instance.SetLookEnabled(studiedObjectsPanelOpened);
-                
+                vThirdPersonCamera.lockCamera = spellPanelOpened;
+                vThirdPersonInput.block = spellPanelOpened;
+                    
                 // Если панель открылась, Отчищаем все поля
                 if (spellPanelOpened)
                 {
                     spellPanel.gameObject.GetComponentInChildren<SpellCreator>().ClearFields();
                 }
             }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                CloseSpellPanel();
+            }
         }
+
+        public void CloseSpellPanel()
+        {
+            spellPanelOpened = false;
+            spellPanel.gameObject.SetActive(spellPanelOpened);
+            vThirdPersonCamera.lockCamera = spellPanelOpened;
+            vThirdPersonInput.block = spellPanelOpened;
+            CursorController.Instance.SetLookEnabled(spellPanelOpened);
+            Debug.Log("CloseSpellPanel");
+        } 
 
         private void CheckForStudyableObjects()
         {
@@ -119,6 +142,9 @@ namespace SpellSystem
 
                     if (currentObject.Studed)
                     {
+                        centerDotOnCanSpellingObject = true;
+                        _spellCreator.CurrentObject = currentObject;
+                        
                         var propertyViewHeader = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
                         propertyViewHeader.Name.text = $"Изучено [{studyable.itemData.ItemName}]";
                         foreach (var property in currentObject.itemData.Properties)
@@ -139,6 +165,9 @@ namespace SpellSystem
                     }
                     else
                     {
+                        centerDotOnCanSpellingObject = false;
+                        _spellCreator.CurrentObject = null;
+                            
                         var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
                         propertyView.Name.text = $"[E] Изучить [{studyable.itemData.ItemName}]";
                     }
@@ -149,11 +178,15 @@ namespace SpellSystem
                 }
                 else
                 {
+                    centerDotOnCanSpellingObject = false;
+                    _spellCreator.CurrentObject = null;
                     centerDot.color = originalDotColor;
                 }
             }
             else
             {
+                centerDotOnCanSpellingObject = false;
+                _spellCreator.CurrentObject = null;
                 centerDot.color = originalDotColor;
             }
 

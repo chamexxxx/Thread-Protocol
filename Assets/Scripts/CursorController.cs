@@ -23,8 +23,8 @@ namespace DefaultNamespace
         public void SetLookEnabled(bool enabled)
         {
             enabled = enabled;
-            Cursor.lockState = enabled ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !enabled;
+            Cursor.lockState = enabled ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = enabled;
         }
     }
 }

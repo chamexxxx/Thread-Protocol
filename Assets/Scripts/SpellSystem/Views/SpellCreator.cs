@@ -9,7 +9,7 @@ namespace SpellSystem.Views
     public class SpellCreator : MonoBehaviour
     {
         [Header("References")]
-        public TMP_InputField titleInput; // Поле для названия предмета
+        //public TMP_InputField titleInput; // Поле для названия предмета
         public Transform propertiesLayout; // Layout группа для свойств
         public TMP_InputField propertyInput; // Поле для ввода нового свойства
         public Button addPropertyButton; // Кнопка добавления свойства
@@ -20,6 +20,9 @@ namespace SpellSystem.Views
         private List<GameObject> propertyInstances = new List<GameObject>(); // Список экземпляров свойств
 
         [SerializeField] private PropertyApplier propertyApplier;
+        [SerializeField] private UIController uiController;
+        
+        [HideInInspector] public StudyableObject CurrentObject;
         void Start()
         {
             // Назначаем обработчики кнопок
@@ -30,7 +33,6 @@ namespace SpellSystem.Views
         // Отчищение всего
         public void ClearFields()
         {
-            titleInput.text = String.Empty;
             propertyInput.text = String.Empty;
             
             properties.Clear();
@@ -94,15 +96,14 @@ namespace SpellSystem.Views
         // Обработка кнопки "Связать"
         void BindSpell()
         {
-            string title = titleInput.text.Trim();
-            
-            if (string.IsNullOrEmpty(title))
+            if (CurrentObject ==null)
             {
-                Debug.LogWarning("Название предмета не может быть пустым!");
+                Debug.LogWarning("Предмет не может быть пустым!");
+                uiController.CloseSpellPanel();
                 return;
             }
             
-            Debug.Log($"Создание заклинания: {title}");
+            Debug.Log($"Создание заклинания: {CurrentObject.itemData.ItemName}");
             Debug.Log("Список свойств:");
             
             foreach (string property in properties)
@@ -110,7 +111,8 @@ namespace SpellSystem.Views
                 Debug.Log($"- {property}");
             }
             
-            propertyApplier.ApplyPropertiesToObject(title, properties.ToArray());
+            propertyApplier.ApplyPropertiesToObject(CurrentObject, properties.ToArray());
+            uiController.CloseSpellPanel();
         }
     }
 }

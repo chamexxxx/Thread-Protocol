@@ -22,6 +22,8 @@ namespace Invector.vCharacterController
         [HideInInspector] public vThirdPersonCamera tpCamera;
         [HideInInspector] public Camera cameraMain;
 
+
+        public bool block = false;
         #endregion
 
         protected virtual void Start()
@@ -39,8 +41,11 @@ namespace Invector.vCharacterController
 
         protected virtual void Update()
         {
-            InputHandle();                  // update the input methods
-            cc.UpdateAnimator();            // updates the Animator Parameters
+            if (!block)
+            {
+                InputHandle();                  // update the input methods
+                cc.UpdateAnimator();            // updates the Animator Parameters
+            }
         }
 
         public virtual void OnAnimatorMove()
