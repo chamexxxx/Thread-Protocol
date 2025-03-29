@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 1186558289}
   - component: {fileID: 1186558288}
   m_Layer: 0
-  m_Name: ImpulseManager
+  m_Name: Impulse Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
