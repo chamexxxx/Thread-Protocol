@@ -3,16 +3,16 @@
     public enum PropertyType
     {
         Slippery,
-        Stone, 
-        Wooden, 
-        Glass, 
-        Large, 
-        Small, 
-        Frozen, 
-        Hot, 
-        Gold, 
-        Magnetic, 
+        Stone,
+        Wooden, // не используем 
+        Glass,
+        Large,
+        Small, // не используем
+        Frozen,
+        Hot,
+        Gold,
+        Magnetic,
         Steel,
-        Usual
+        Usual // не используем
     }
 }
