@@ -5,7 +5,7 @@ public class PressurePlate : MonoBehaviour
 {
     [Header("Настройки веса")]
     // Минимальный вес, необходимый для активации плиты.
-    public float requiredWeight = 10f;
+    public float requiredWeight = 50f;
 
     public GameObject plate;
     [Header("Настройки движения плиты")]
