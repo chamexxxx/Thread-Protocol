@@ -79,7 +79,7 @@ namespace SpellSystem
                 studiedObjectsPanelOpened = !studiedObjectsPanelOpened;
                 studiedObjectsPanel.gameObject.SetActive(studiedObjectsPanelOpened);
                 
-                CursorController.Instance.SetLookEnabled(studiedObjectsPanelOpened);
+                SwitchActions();
                 
                 // Если панель открылась, обновляем список предметов
                 if (studiedObjectsPanelOpened)
@@ -93,11 +93,8 @@ namespace SpellSystem
                 // Переключаем состояние панели
                 spellPanelOpened = !spellPanelOpened;
                 spellPanel.gameObject.SetActive(spellPanelOpened);
-                CursorController.Instance.SetLookEnabled(spellPanelOpened);
-        
-                CursorController.Instance.SetLookEnabled(studiedObjectsPanelOpened);
-                vThirdPersonCamera.lockCamera = spellPanelOpened;
-                vThirdPersonInput.block = spellPanelOpened;
+
+                SwitchActions();
                     
                 // Если панель открылась, Отчищаем все поля
                 if (spellPanelOpened)
@@ -115,11 +112,38 @@ namespace SpellSystem
         {
             spellPanelOpened = false;
             spellPanel.gameObject.SetActive(spellPanelOpened);
-            vThirdPersonCamera.lockCamera = spellPanelOpened;
-            vThirdPersonInput.block = spellPanelOpened;
-            CursorController.Instance.SetLookEnabled(spellPanelOpened);
+
+            SwitchActions();
+            
             Debug.Log("CloseSpellPanel");
-        } 
+        }
+
+        private void SwitchActions()
+        {
+            var uiIsActive = spellPanelOpened || studiedObjectsPanelOpened;
+            
+            if (uiIsActive)
+            {
+                Debug.Log("Enable UI, lock camera and input");
+                
+                CursorController.Instance.SetLookEnabled(true);
+                vThirdPersonCamera.lockCamera = true;
+                vThirdPersonInput.block = true;
+            }
+            else
+            {
+                Debug.Log("Disable UI, unlock camera and input");
+                
+                CursorController.Instance.SetLookEnabled(false);
+                vThirdPersonCamera.lockCamera = false;
+                vThirdPersonInput.block = false;
+            }
+        }
+
+        private void DisableActions()
+        {
+            
+        }
 
         private void CheckForStudyableObjects()
         {
