@@ -13,6 +13,9 @@ namespace SpellSystem
         [SerializeField] private PropertyDatabase _propertyDatabase;
         [SerializeField] private PlayerProgress _playerProgress;
 
+        /**
+         * Применение списка свойств к изученному предмету
+         */
         public void ApplyPropertiesToObject(string objectName, string[] propertyNames)
         {
             // 1. Поиск объекта на сцене
@@ -30,6 +33,9 @@ namespace SpellSystem
             }
         }
 
+        /**
+         * Поиск изучаемого предмета по названию
+         */
         private StudyableObject FindStudyableObject(string objectName)
         {
             // Получаем все StudyableObject в радиусе
@@ -41,6 +47,9 @@ namespace SpellSystem
             return nearbyObjects.FirstOrDefault(obj => obj.itemData.ItemName == objectName);
         }
 
+        /**
+         * Добавление свойства к изученному предмету
+         */
         private void TryAddPropertyToObject(StudyableObject targetObject, string propertyName)
         {
             // 1. Проверяем, что свойство существует в базе

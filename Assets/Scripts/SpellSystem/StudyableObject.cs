@@ -18,7 +18,7 @@ namespace SpellSystem
             studySystem = FindObjectOfType<UIController>();
             if (studySystem == null)
             {
-                Debug.LogError("StudySystem not found in scene!");
+                Debug.LogError("UIController not found in scene!");
             }
         }
         
