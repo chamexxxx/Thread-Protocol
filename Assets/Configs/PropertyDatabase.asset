@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2357ea8ab93a4838929d0153f08ae40e, type: 3}
+  m_Name: PropertyDatabase
+  m_EditorClassIdentifier: 
+  AllProperties:
+  - Type: 0
+    DisplayName: "\u0421\u043A\u043E\u043B\u044C\u0437\u043A\u0438\u0439"
+    DisplayFeminineName: "\u0421\u043A\u043E\u043B\u044C\u0437\u043A\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 0b000000
+  - Type: 2
+    DisplayName: "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u044B\u0439"
+    DisplayFeminineName: "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 010000000200000003000000080000000a0000000b000000
+  - Type: 3
+    DisplayName: "\u0421\u0442\u0435\u043A\u043B\u044F\u043D\u043D\u044B\u0439"
+    DisplayFeminineName: "\u0421\u0442\u0435\u043A\u043B\u044F\u043D\u043D\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 0100000002000000080000000a0000000b000000
+  - Type: 4
+    DisplayName: "\u0411\u043E\u043B\u044C\u0448\u043E\u0439"
+    DisplayFeminineName: "\u0411\u043E\u043B\u044C\u0448\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 050000000b000000
+  - Type: 5
+    DisplayName: "\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0438\u0439"
+    DisplayFeminineName: "\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 040000000b000000
+  - Type: 6
+    DisplayName: "\u0417\u0430\u043C\u0451\u0440\u0437\u0448\u0438\u0439"
+    DisplayFeminineName: "\u0417\u0430\u043C\u0451\u0440\u0437\u0448\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 070000000b000000
+  - Type: 7
+    DisplayName: "\u0413\u043E\u0440\u044F\u0447\u0438\u0439"
+    DisplayFeminineName: "\u0413\u043E\u0440\u044F\u0447\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 060000000b000000
+  - Type: 8
+    DisplayName: "\u0417\u043E\u043B\u043E\u0442\u043E\u0439"
+    DisplayFeminineName: "\u0417\u043E\u043B\u043E\u0442\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 0100000002000000030000000a0000000b000000
+  - Type: 9
+    DisplayName: "\u041C\u0430\u0433\u043D\u0438\u0442\u043D\u044B\u0439"
+    DisplayFeminineName: "\u041C\u0430\u0433\u043D\u0438\u0442\u043D\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 0b000000
+  - Type: 10
+    DisplayName: "\u0421\u0442\u0430\u043B\u044C\u043D\u043E\u0439"
+    DisplayFeminineName: "\u0421\u0442\u0430\u043B\u044C\u043D\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 01000000020000000300000008000000
+  - Type: 11
+    DisplayName: "\u041E\u0431\u044B\u0447\u043D\u044B\u0439"
+    DisplayFeminineName: "\u041E\u0431\u044B\u0447\u043D\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+  - Type: 1
+    DisplayName: "\u041A\u0430\u043C\u0435\u043D\u043D\u044B\u0439"
+    DisplayFeminineName: "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F"
+    Icon: {fileID: 0}
+    Antonyms: 0200000003000000080000000a0000000b000000
