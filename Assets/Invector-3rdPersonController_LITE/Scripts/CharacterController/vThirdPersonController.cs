@@ -5,6 +5,7 @@ namespace Invector.vCharacterController
 {
     public class vThirdPersonController : vThirdPersonAnimator
     {
+        public VFXManager vfxManager;
         public virtual void ControlAnimatorRootMotion()
         {
             if (!this.enabled) return;
@@ -129,6 +130,25 @@ namespace Invector.vCharacterController
         public virtual void Spell()
         {
             animator.CrossFadeInFixedTime("Spell", 0.2f);
+        }
+
+        public virtual void OnAnimationSpellTrigger()
+        {
+            Transform topParent = transform;
+            while (topParent.parent != null)
+            {
+                topParent = topParent.parent;
+            }
+
+            // Находим CapsuleCollider среди всех дочерних объектов
+            CapsuleCollider capsule = topParent.GetComponentInChildren<CapsuleCollider>();
+
+            // Получаем направление по оси Z
+            Vector3 forwardDirection = capsule.transform.forward;
+            Debug.LogWarning("CapsuleCollider не найден среди дочерних объектов!");
+
+            // var obj = Instantiate(VFXManager.spellVfx, Vector3.forward, capsule.transform.rotation);
+            
         }
     }
 }
