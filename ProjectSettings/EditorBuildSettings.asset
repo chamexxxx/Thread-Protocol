@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/StartupScene.unity
     guid: 2568c759947114b45adc5b930dd23de9
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
+    path: Assets/Scenes/LoadScene.unity
     guid: 13535568c6b4c114eb96ff16ec442d93
   - enabled: 1
-    path: Assets/Scenes/MagnetScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Rooms/Room 3.unity
+    guid: 259dee93dd3431d4cb6ff005f02c329c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

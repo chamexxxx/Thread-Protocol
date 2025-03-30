@@ -20,7 +20,7 @@ public class MainMenuUIManager : MonoBehaviour
 
     private void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
+        SceneManager.LoadScene("LoadScene", LoadSceneMode.Single);
     }
 
     private void OnExitButtonClicked()
