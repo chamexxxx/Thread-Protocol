@@ -6,24 +6,30 @@ public class AudioEndEvent : MonoBehaviour
     public AudioSource audioSource; // Перетащи сюда AudioSource в Inspector
 
     private bool hasPlayed = false; // Чтобы событие не вызывалось многократно
-
-    void Update()
+    
+    void Start()
     {
-        if (!audioSource.isPlaying && hasPlayed)
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+        
+        if (audioSource != null)
+            StartCoroutine(WaitForAudioEnd());
+    }
+
+    private System.Collections.IEnumerator WaitForAudioEnd()
+    {
+        while (audioSource.isPlaying)
         {
-            hasPlayed = false;
-            OnAudioEnd();
+            yield return null;
         }
+
+        OnAudioEnd();
     }
 
-    public void PlayAudio()
+    private void OnAudioEnd()
     {
-        audioSource.Play();
-        hasPlayed = true; // Отмечаем, что аудио началось
-    }
-
-    void OnAudioEnd()
-    {
+        Debug.Log("Аудио закончилось!");
+        
         SceneManager.LoadScene("Room 3", LoadSceneMode.Single);
     }
 }
