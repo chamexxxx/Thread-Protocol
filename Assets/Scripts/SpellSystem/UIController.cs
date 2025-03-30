@@ -42,6 +42,8 @@ namespace SpellSystem
         [SerializeField] private vThirdPersonCamera vThirdPersonCamera;
         [SerializeField] public vThirdPersonInput vThirdPersonInput;
         
+        private bool uiIsActive => spellPanelOpened || studiedObjectsPanelOpened;
+        
         private bool centerDotOnCanSpellingObject = false;
         
         [SerializeField] private SpellCreator _spellCreator ;
@@ -92,8 +94,11 @@ namespace SpellSystem
             if (Input.GetKeyDown(KeyCode.Mouse0) && centerDotOnCanSpellingObject)
             {
                 // Переключаем состояние панели
-                spellPanelOpened = !spellPanelOpened;
-                spellPanel.gameObject.SetActive(spellPanelOpened);
+                if (!spellPanelOpened)
+                {
+                    spellPanelOpened = true;
+                    spellPanel.gameObject.SetActive(true);
+                }
 
                 SwitchActions();
                     
@@ -121,8 +126,6 @@ namespace SpellSystem
 
         private void SwitchActions()
         {
-            var uiIsActive = spellPanelOpened || studiedObjectsPanelOpened;
-            
             if (uiIsActive)
             {
                 Debug.Log("Enable UI, lock camera and input");
@@ -148,9 +151,11 @@ namespace SpellSystem
 
         private void CheckForStudyableObjects()
         {
+            if (uiIsActive) return;
+            
             Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hit;
-
+    
             if (Physics.Raycast(ray, out hit, maxStudyDistance, studyableLayer))
             {
                 StudyableObject studyable = hit.collider.GetComponent<StudyableObject>();
