@@ -387,7 +387,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00001847744}
+  m_AnchoredPosition: {x: 0, y: 0.000102522994}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &64833801
@@ -2107,7 +2107,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 50357741}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999815
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3887,47 +3887,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7958330566345960193, guid: f6541249831733f4eb291a47ee017b73, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1520270052}
-    - targetCorrespondingSourceObject: {fileID: 7958330566345960193, guid: f6541249831733f4eb291a47ee017b73, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1520270051}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6541249831733f4eb291a47ee017b73, type: 3}
---- !u!1 &1520270050 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7958330566345960193, guid: f6541249831733f4eb291a47ee017b73, type: 3}
-  m_PrefabInstance: {fileID: 1520270049}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1520270051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520270050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17ddf68c655a4c9186418f14ea56c190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _searchRadius: 500
-  _propertyDatabase: {fileID: 11400000, guid: 1a8258147d1843c4d945b4d9b4151d87, type: 2}
-  _playerProgress: {fileID: 1520270052}
---- !u!114 &1520270052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520270050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 685fe959b7f2404cabf5ffae68411fb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  studiedItems: []
 --- !u!1 &1751119086
 GameObject:
   m_ObjectHideFlags: 0
@@ -4171,7 +4132,7 @@ MonoBehaviour:
   addPropertyButton: {fileID: 52414674}
   bindButton: {fileID: 1902447190}
   propertyPrefab: {fileID: 2483954827705564837, guid: c6d4f50f3c88420449bb6699a59db915, type: 3}
-  propertyApplier: {fileID: 1520270051}
+  propertyApplier: {fileID: 0}
   uiController: {fileID: 460586179}
   CurrentObject: {fileID: 0}
 --- !u!1 &1902447188

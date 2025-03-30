@@ -88,7 +88,7 @@ namespace SpellSystem
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Tab) && centerDotOnCanSpellingObject)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && centerDotOnCanSpellingObject)
             {
                 // Переключаем состояние панели
                 spellPanelOpened = !spellPanelOpened;
