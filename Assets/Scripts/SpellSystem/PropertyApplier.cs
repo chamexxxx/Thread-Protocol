@@ -81,7 +81,8 @@ namespace SpellSystem
         {
             // 1. Проверяем, что свойство существует в базе
             PropertyDatabase.PropertyInfo propertyInfo = _propertyDatabase.AllProperties
-                .FirstOrDefault(p => p.DisplayName == propertyName || p.DisplayFeminineName == propertyName);
+                .FirstOrDefault(p => p.DisplayName.ToLower() == propertyName.ToLower()
+                                     || p.DisplayFeminineName.ToLower() == propertyName.ToLower());
 
             if (propertyInfo == null)
             {

@@ -3,6 +3,7 @@ using Invector.vCharacterController;
 using SpellSystem.Data;
 using SpellSystem.Views;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 namespace SpellSystem
@@ -39,7 +40,7 @@ namespace SpellSystem
         
         [SerializeField] private PropertyDatabase propertyDatabase;
         [SerializeField] private vThirdPersonCamera vThirdPersonCamera;
-        [SerializeField] private vThirdPersonInput vThirdPersonInput;
+        [SerializeField] public vThirdPersonInput vThirdPersonInput;
         
         private bool centerDotOnCanSpellingObject = false;
         
@@ -170,7 +171,7 @@ namespace SpellSystem
                         _spellCreator.CurrentObject = currentObject;
                         
                         var propertyViewHeader = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
-                        propertyViewHeader.Name.text = $"Изучено [{studyable.itemData.ItemName}]";
+                        propertyViewHeader.Name.text = $"[{studyable.itemData.ItemName}]";
                         foreach (var property in currentObject.itemData.Properties)
                         {
                             var propertyInfo = GetPropertyInfo(property);
@@ -186,6 +187,7 @@ namespace SpellSystem
                             }
                             
                         }
+                        // TODO тут моя проверка
                     }
                     else
                     {
