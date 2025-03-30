@@ -1,18 +1,11 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class DoorController : MonoBehaviour
 {
     public Transform leftDoor, rightDoor; // Левая и правая половинки двери
     public Transform openLeft, openRight; // Позиции для открывания
     public Transform closedLeft, closedRight; // Позиции для закрытия
     public float speed = 3f;
-    public PressurePlate plate;
-
-    private void OnDestroy()
-    {
-        plate.Pushed -= OpenDoor;
-        plate.UnPushed -= CloseDoor;
-    }
 
     private Vector3 leftTarget, rightTarget;
 
@@ -20,8 +13,6 @@ public class Door : MonoBehaviour
     {
         leftTarget = closedLeft.position;
         rightTarget = closedRight.position;
-        plate.Pushed += OpenDoor;
-        plate.UnPushed += CloseDoor;
     }
 
     private void Update()
