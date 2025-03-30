@@ -53,13 +53,16 @@ namespace SpellSystem
                     }
                 }
             }
+
+            var results = new List<bool>();
+            
             // Вызов TryAddPropertyToObject для каждого свойства
             foreach (string propertyName in propertyNames)
             {
-                TryAddPropertyToObject(targetObject, propertyName);
+                results.Add(TryAddPropertyToObject(targetObject, propertyName));
             }
 
-            return true;
+            return results.All(r => r);
         }
         
         private PropertyDatabase.PropertyInfo GetPropertyInfoByName(string name)
