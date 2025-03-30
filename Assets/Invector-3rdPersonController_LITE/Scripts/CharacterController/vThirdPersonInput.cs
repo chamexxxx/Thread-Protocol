@@ -181,7 +181,7 @@ namespace Invector.vCharacterController
         protected virtual void SpellInput()
         {
             if (Input.GetKeyDown(spellInput))
-                cc.Spell();
+                cc.SpellFailure();
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace SpellSystem
             }
         }
 
-        public void ApplyPropertiesToObject(StudyableObject currentObject, string[] propertyNames)
+        public bool TryApplyPropertiesToObject(StudyableObject currentObject, string[] propertyNames)
         {
             StudyableObject targetObject = currentObject;
 
@@ -49,7 +49,7 @@ namespace SpellSystem
                     if (_propertyDatabase.AreAntonyms(prop1.Type, prop2.Type))
                     {
                         Debug.LogError($"Конфликт свойств: '{prop1.DisplayName}' и '{prop2.DisplayName}' являются антонимами!");
-                        return;
+                        return false;
                     }
                 }
             }
@@ -58,6 +58,8 @@ namespace SpellSystem
             {
                 TryAddPropertyToObject(targetObject, propertyName);
             }
+
+            return true;
         }
         
         private PropertyDatabase.PropertyInfo GetPropertyInfoByName(string name)
@@ -77,7 +79,7 @@ namespace SpellSystem
             return nearbyObjects.FirstOrDefault(obj => obj.itemData.ItemName == objectName);
         }
 
-        private void TryAddPropertyToObject(StudyableObject targetObject, string propertyName)
+        private bool TryAddPropertyToObject(StudyableObject targetObject, string propertyName)
         {
             // 1. Проверяем, что свойство существует в базе
             PropertyDatabase.PropertyInfo propertyInfo = _propertyDatabase.AllProperties
@@ -87,7 +89,7 @@ namespace SpellSystem
             if (propertyInfo == null)
             {
                 Debug.LogError($"Свойство '{propertyName}' не найдено в базе данных!");
-                return;
+                return false;
             }
 
             // 2. Проверяем род объекта и соответствие свойства
@@ -97,7 +99,7 @@ namespace SpellSystem
             if (propertyName != correctName)
             {
                 Debug.LogError($"Для {(isFeminine ? "женского" : "мужского")} рода должно использоваться свойство '{correctName}'!");
-                return;
+                return false;
             }
 
             // 3. Проверяем, изучено ли свойство игроком (хотя бы одним изученным предметом)
@@ -107,7 +109,7 @@ namespace SpellSystem
             if (!isPropertyStudied)
             {
                 Debug.LogError($"Свойство '{propertyName}' ещё не изучено игроком (не найдено ни в одном изученном предмете)!");
-                return;
+                return false;
             }
 
             // 4. Удаляем антонимы, если они есть
@@ -120,6 +122,8 @@ namespace SpellSystem
                 
                 Debug.Log($"Добавлено свойство '{propertyName}' к объекту '{targetObject.itemData.ItemName}'");
             }
+
+            return true;
         }
 
         private void RemoveAntonyms(StudyableObject targetObject, PropertyType newPropertyType)
