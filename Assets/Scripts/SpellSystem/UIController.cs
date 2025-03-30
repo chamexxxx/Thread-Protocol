@@ -71,6 +71,11 @@ namespace SpellSystem
             
             if (currentObject != null && Input.GetKeyDown(KeyCode.E))
             {
+                if (currentObject.Studed && currentObject.pickable)
+                {
+                    currentObject.Pickup();
+                }
+                
                 StudyItem(currentObject);
                 studyPromptUI.SetActive(false);
                 currentObject = null;
@@ -192,7 +197,12 @@ namespace SpellSystem
                             }
                             
                         }
-                        // TODO тут моя проверка
+
+                        if (currentObject.pickable)
+                        {
+                            var pickupView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                            pickupView.Name.text = $"[E] Подобрать";
+                        }
                     }
                     else
                     {
