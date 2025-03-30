@@ -127,9 +127,14 @@ namespace Invector.vCharacterController
                 animator.CrossFadeInFixedTime("JumpMove", .2f);
         }
 
-        public virtual void Spell()
+        public virtual void SpellSuccess()
         {
-            animator.CrossFadeInFixedTime("Spell", 0.2f);
+            animator.CrossFadeInFixedTime("SpellSuccess", 0.2f);
+        }
+        
+        public virtual void SpellFailure()
+        {
+            animator.CrossFadeInFixedTime("SpellFailure", 0.2f);
         }
 
         public virtual void OnAnimationSpellTrigger()

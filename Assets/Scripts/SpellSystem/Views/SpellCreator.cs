@@ -36,6 +36,7 @@ namespace SpellSystem.Views
             propertyInput.text = String.Empty;
             
             properties.Clear();
+            
             foreach (var property in propertyInstances)
             {
                 Destroy(property);
@@ -45,9 +46,12 @@ namespace SpellSystem.Views
         // Добавление нового свойства
         void AddProperty()
         {
+            Debug.Log("AddProperty");
             string property = propertyInput.text.Trim();
+            Debug.Log("property: " + property);
             if (!string.IsNullOrEmpty(property) && propertyPrefab != null)
             {
+                Debug.Log("yes");
                 properties.Add(property);
                 CreatePropertyUIElement(property);
                 propertyInput.text = ""; // Очищаем поле ввода
@@ -111,8 +115,16 @@ namespace SpellSystem.Views
                 Debug.Log($"- {property}");
             }
             
-            propertyApplier.ApplyPropertiesToObject(CurrentObject, properties.ToArray());
             uiController.CloseSpellPanel();
+            uiController.vThirdPersonInput.SetRotateTarget(CurrentObject.gameObject);
+            
+            if (propertyApplier.TryApplyPropertiesToObject(CurrentObject, properties.ToArray()))
+                uiController.vThirdPersonInput.cc.SpellSuccess();
+            else
+            {
+                uiController.vThirdPersonInput.cc.SpellFailure();
+            }
+            
         }
     }
 }

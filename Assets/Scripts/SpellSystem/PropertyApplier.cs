@@ -36,9 +36,9 @@ namespace SpellSystem
             }
         }
 
-        public void ApplyPropertiesToObject(StudyableObject currentObject, string[] propertyNames)
+        public bool TryApplyPropertiesToObject(StudyableObject studyableObject, string[] propertyNames)
         {
-            StudyableObject targetObject = currentObject;
+            StudyableObject targetObject = studyableObject;
 
             for (int i = 0; i < propertyNames.Length; i++)
             {
@@ -49,15 +49,20 @@ namespace SpellSystem
                     if (_propertyDatabase.AreAntonyms(prop1.Type, prop2.Type))
                     {
                         Debug.LogError($"Конфликт свойств: '{prop1.DisplayName}' и '{prop2.DisplayName}' являются антонимами!");
-                        return;
+                        return false;
                     }
                 }
             }
+
+            var results = new List<bool>();
+            
             // Вызов TryAddPropertyToObject для каждого свойства
             foreach (string propertyName in propertyNames)
             {
-                TryAddPropertyToObject(targetObject, propertyName);
+                results.Add(TryAddPropertyToObject(targetObject, propertyName));
             }
+
+            return results.All(r => r);
         }
         
         private PropertyDatabase.PropertyInfo GetPropertyInfoByName(string name)
@@ -77,26 +82,27 @@ namespace SpellSystem
             return nearbyObjects.FirstOrDefault(obj => obj.itemData.ItemName == objectName);
         }
 
-        private void TryAddPropertyToObject(StudyableObject targetObject, string propertyName)
+        private bool TryAddPropertyToObject(StudyableObject studyableObject, string propertyName)
         {
             // 1. Проверяем, что свойство существует в базе
             PropertyDatabase.PropertyInfo propertyInfo = _propertyDatabase.AllProperties
-                .FirstOrDefault(p => p.DisplayName == propertyName || p.DisplayFeminineName == propertyName);
+                .FirstOrDefault(p => p.DisplayName.ToLower() == propertyName.ToLower()
+                                     || p.DisplayFeminineName.ToLower() == propertyName.ToLower());
 
             if (propertyInfo == null)
             {
                 Debug.LogError($"Свойство '{propertyName}' не найдено в базе данных!");
-                return;
+                return false;
             }
 
             // 2. Проверяем род объекта и соответствие свойства
-            bool isFeminine = targetObject.itemData.IsFeminine;
+            bool isFeminine = studyableObject.itemData.IsFeminine;
             string correctName = isFeminine ? propertyInfo.DisplayFeminineName : propertyInfo.DisplayName;
 
             if (propertyName != correctName)
             {
                 Debug.LogError($"Для {(isFeminine ? "женского" : "мужского")} рода должно использоваться свойство '{correctName}'!");
-                return;
+                return false;
             }
 
             // 3. Проверяем, изучено ли свойство игроком (хотя бы одним изученным предметом)
@@ -106,40 +112,47 @@ namespace SpellSystem
             if (!isPropertyStudied)
             {
                 Debug.LogError($"Свойство '{propertyName}' ещё не изучено игроком (не найдено ни в одном изученном предмете)!");
-                return;
+                return false;
             }
 
             // 4. Удаляем антонимы, если они есть
-            RemoveAntonyms(targetObject, propertyInfo.Type);
+            RemoveAntonyms(studyableObject, propertyInfo.Type);
 
             // 5. Добавляем свойство (если его ещё нет)
-            if (!targetObject.itemData.Properties.Contains(propertyInfo.Type))
+            if (!studyableObject.itemData.Properties.Contains(propertyInfo.Type))
             {
-                targetObject.AddProperty(propertyInfo.Type);
+                studyableObject.AddProperty(propertyInfo.Type);
                 
-                Debug.Log($"Добавлено свойство '{propertyName}' к объекту '{targetObject.itemData.ItemName}'");
+                Debug.Log($"Добавлено свойство '{propertyName}' к объекту '{studyableObject.itemData.ItemName}'");
             }
+
+            return true;
         }
 
-        private void RemoveAntonyms(StudyableObject targetObject, PropertyType newPropertyType)
+        private void RemoveAntonyms(StudyableObject studyableObject, PropertyType newPropertyType)
         {
-            if (targetObject?.itemData?.Properties == null) 
+            Debug.Log("Remove Antonyms");
+            
+            Debug.Log(studyableObject?.itemData?.Properties);
+            
+            if (studyableObject?.itemData?.Properties == null) 
                 return;
 
             // Создаем копию списка для итерации
-            var propertiesToCheck = new List<PropertyType>(targetObject.itemData.Properties);
+            var propertiesToCheck = new List<PropertyType>(studyableObject.itemData.Properties);
 
             // Собираем антонимы для удаления
             var antonymsToRemove = propertiesToCheck
                 .Where(p => _propertyDatabase.AreAntonyms(p, newPropertyType))
                 .ToList();
+            
+            Debug.Log("antonymsToRemove: " + antonymsToRemove);
 
             // Удаляем антонимы из оригинального списка
             foreach (var antonym in antonymsToRemove)
             {
-                
-                
-                targetObject.RemoveProperty(antonym);
+                Debug.Log("antonym: " + antonym);
+                studyableObject.RemoveProperty(antonym);
                 var propInfo = _propertyDatabase.GetPropertyInfo(antonym);
                 Debug.Log($"Удален антоним '{propInfo?.DisplayName}' при добавлении нового свойства");
             }

@@ -1,27 +1,22 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class DoorController : MonoBehaviour
 {
-    public Transform leftDoor, rightDoor; // Левая и правая половинки двери
-    public Transform openLeft, openRight; // Позиции для открывания
-    public Transform closedLeft, closedRight; // Позиции для закрытия
-    public float speed = 3f;
-    public PressurePlate plate;
-
-    private void OnDestroy()
-    {
-        plate.Pushed -= OpenDoor;
-        plate.UnPushed -= CloseDoor;
-    }
+    [SerializeField] private Transform leftDoor, rightDoor; // Левая и правая половинки двери
+    [SerializeField] private Transform openLeft, openRight; // Позиции для открывания
+    [SerializeField] private Transform closedLeft, closedRight; // Позиции для закрытия
+    [SerializeField] private float speed = 3f;
 
     private Vector3 leftTarget, rightTarget;
+    
+    private bool _isOpened = false;
+    
+    public bool IsOpened => _isOpened;
 
     private void Start()
     {
         leftTarget = closedLeft.position;
         rightTarget = closedRight.position;
-        plate.Pushed += OpenDoor;
-        plate.UnPushed += CloseDoor;
     }
 
     private void Update()
@@ -33,12 +28,16 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
+        _isOpened = true;
+        
         leftTarget = openLeft.position;
         rightTarget = openRight.position;
     }
 
     public void CloseDoor()
     {
+        _isOpened = false;
+        
         leftTarget = closedLeft.position;
         rightTarget = closedRight.position;
     }

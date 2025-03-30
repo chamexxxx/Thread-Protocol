@@ -3,6 +3,7 @@ using Invector.vCharacterController;
 using SpellSystem.Data;
 using SpellSystem.Views;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 namespace SpellSystem
@@ -39,7 +40,9 @@ namespace SpellSystem
         
         [SerializeField] private PropertyDatabase propertyDatabase;
         [SerializeField] private vThirdPersonCamera vThirdPersonCamera;
-        [SerializeField] private vThirdPersonInput vThirdPersonInput;
+        [SerializeField] public vThirdPersonInput vThirdPersonInput;
+        
+        private bool uiIsActive => spellPanelOpened || studiedObjectsPanelOpened;
         
         private bool centerDotOnCanSpellingObject = false;
         
@@ -68,6 +71,11 @@ namespace SpellSystem
             
             if (currentObject != null && Input.GetKeyDown(KeyCode.E))
             {
+                if (currentObject.Studed && currentObject.pickable)
+                {
+                    currentObject.Pickup();
+                }
+                
                 StudyItem(currentObject);
                 studyPromptUI.SetActive(false);
                 currentObject = null;
@@ -88,19 +96,18 @@ namespace SpellSystem
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Tab) && centerDotOnCanSpellingObject)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && centerDotOnCanSpellingObject)
             {
                 // Переключаем состояние панели
-                spellPanelOpened = !spellPanelOpened;
-                spellPanel.gameObject.SetActive(spellPanelOpened);
-
-                SwitchActions();
-                    
-                // Если панель открылась, Отчищаем все поля
-                if (spellPanelOpened)
+                if (!spellPanelOpened)
                 {
                     spellPanel.gameObject.GetComponentInChildren<SpellCreator>().ClearFields();
+                    
+                    spellPanelOpened = true;
+                    spellPanel.gameObject.SetActive(true);
                 }
+
+                SwitchActions();
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -120,8 +127,6 @@ namespace SpellSystem
 
         private void SwitchActions()
         {
-            var uiIsActive = spellPanelOpened || studiedObjectsPanelOpened;
-            
             if (uiIsActive)
             {
                 Debug.Log("Enable UI, lock camera and input");
@@ -147,9 +152,11 @@ namespace SpellSystem
 
         private void CheckForStudyableObjects()
         {
+            if (uiIsActive) return;
+            
             Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hit;
-
+    
             if (Physics.Raycast(ray, out hit, maxStudyDistance, studyableLayer))
             {
                 StudyableObject studyable = hit.collider.GetComponent<StudyableObject>();
@@ -170,7 +177,7 @@ namespace SpellSystem
                         _spellCreator.CurrentObject = currentObject;
                         
                         var propertyViewHeader = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
-                        propertyViewHeader.Name.text = $"Изучено [{studyable.itemData.ItemName}]";
+                        propertyViewHeader.Name.text = $"[{studyable.itemData.ItemName}]";
                         foreach (var property in currentObject.itemData.Properties)
                         {
                             var propertyInfo = GetPropertyInfo(property);
@@ -185,6 +192,12 @@ namespace SpellSystem
                                 propertyView.Name.text = $"  * {propertyInfo.DisplayName}";
                             }
                             
+                        }
+
+                        if (currentObject.pickable)
+                        {
+                            var pickupView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                            pickupView.Name.text = $"[E] Подобрать";
                         }
                     }
                     else

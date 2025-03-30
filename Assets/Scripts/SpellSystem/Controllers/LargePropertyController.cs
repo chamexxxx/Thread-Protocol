@@ -7,14 +7,14 @@ namespace SpellSystem.Controllers
 {
     public class LargePropertyController : MonoBehaviour, IPropertyController
     {
-        private float _scaleFactor = 3f;
-        private float _scaleDuration = 2f;
+        private float _scaleFactor = 2f;
+        private float _scaleDuration = 1f;
 
         private void Start()
         {
             StartCoroutine(ScaleObject());
 
-            GetComponent<Rigidbody>().mass *= _scaleFactor;
+            GetComponent<Rigidbody>().mass *= _scaleFactor * 2;
         }
 
         private void OnDestroy()
