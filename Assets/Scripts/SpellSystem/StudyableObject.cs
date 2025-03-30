@@ -144,7 +144,7 @@ namespace SpellSystem
         
         public void RemoveProperty(PropertyType propertyType)
         {
-            itemData.Properties.Add(propertyType);
+            itemData.Properties.Remove(propertyType);
 
             switch (propertyType)
             {

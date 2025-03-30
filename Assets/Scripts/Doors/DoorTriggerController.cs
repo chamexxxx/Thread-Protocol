@@ -14,6 +14,11 @@ namespace DefaultNamespace
 
         private void OnTriggerEnter(Collider other)
         {
+            if (!other.CompareTag("Player"))
+            {
+                return;
+            }
+            
             _doorController.OpenDoor();
         }
     }

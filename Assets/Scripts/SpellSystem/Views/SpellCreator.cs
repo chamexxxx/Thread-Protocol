@@ -36,6 +36,7 @@ namespace SpellSystem.Views
             propertyInput.text = String.Empty;
             
             properties.Clear();
+            
             foreach (var property in propertyInstances)
             {
                 Destroy(property);
@@ -116,6 +117,7 @@ namespace SpellSystem.Views
             
             uiController.CloseSpellPanel();
             uiController.vThirdPersonInput.SetRotateTarget(CurrentObject.gameObject);
+            
             if (propertyApplier.TryApplyPropertiesToObject(CurrentObject, properties.ToArray()))
                 uiController.vThirdPersonInput.cc.SpellSuccess();
             else
