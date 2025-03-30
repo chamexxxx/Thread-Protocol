@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: d6d220deb5bbb624dab14ae4c2529c77, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2403,6 +2403,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355649512}
   m_Mesh: {fileID: 855131390749405241, guid: 1d1254021bcf8a249a8343533ce74a23, type: 3}
+--- !u!1 &1408381698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1408381700}
+  - component: {fileID: 1408381699}
+  m_Layer: 0
+  m_Name: PPVol
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1408381699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408381698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 52c78c00b34bfe84cb16b948c9c93a41, type: 2}
+  isGlobal: 1
+  blendDistance: 0
+  weight: 1
+  priority: 0
+--- !u!4 &1408381700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408381698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.871414, y: -1.865073, z: 18.269278}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1420166018
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,6 +4592,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character Setup
       objectReference: {fileID: 0}
+    - target: {fileID: 1950205363547442569, guid: bdb40640960b75b479962129668e802a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2944953465108346479, guid: bdb40640960b75b479962129668e802a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -4557,7 +4610,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3079439193613138870, guid: bdb40640960b75b479962129668e802a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0010386105
+      value: 0.00058905245
       objectReference: {fileID: 0}
     - target: {fileID: 3476031978203804394, guid: bdb40640960b75b479962129668e802a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8368,3 +8421,4 @@ SceneRoots:
   - {fileID: 1697473834}
   - {fileID: 1348599821}
   - {fileID: 1956740985}
+  - {fileID: 1408381700}
