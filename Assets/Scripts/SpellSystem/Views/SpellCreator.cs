@@ -45,9 +45,12 @@ namespace SpellSystem.Views
         // Добавление нового свойства
         void AddProperty()
         {
+            Debug.Log("AddProperty");
             string property = propertyInput.text.Trim();
+            Debug.Log("property: " + property);
             if (!string.IsNullOrEmpty(property) && propertyPrefab != null)
             {
+                Debug.Log("yes");
                 properties.Add(property);
                 CreatePropertyUIElement(property);
                 propertyInput.text = ""; // Очищаем поле ввода

@@ -101,17 +101,13 @@ namespace SpellSystem
                 // Переключаем состояние панели
                 if (!spellPanelOpened)
                 {
+                    spellPanel.gameObject.GetComponentInChildren<SpellCreator>().ClearFields();
+                    
                     spellPanelOpened = true;
                     spellPanel.gameObject.SetActive(true);
                 }
 
                 SwitchActions();
-                    
-                // Если панель открылась, Отчищаем все поля
-                if (spellPanelOpened)
-                {
-                    spellPanel.gameObject.GetComponentInChildren<SpellCreator>().ClearFields();
-                }
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
