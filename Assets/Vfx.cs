@@ -20,14 +20,6 @@ public class Vfx : StateMachineBehaviour
         if (stateInfo.normalizedTime >= triggerTime && !triggered)
         {
             triggered = true;
-            Debug.LogWarning($"{animator.GetComponent<Rigidbody>().mass}");
-
-            // Находим CapsuleCollider среди всех дочерних объектов
-            CapsuleCollider capsule = animator.GetComponent<CapsuleCollider>();
-
-            // Получаем направление по оси Z
-            Vector3 forwardDirection = capsule.transform.forward;
-            Debug.LogWarning("CapsuleCollider не найден среди дочерних объектов!");
             
             Vector3 midpoint = (vfxManager.leftHand.position + vfxManager.rightHand.position) / 2;
 
@@ -35,9 +27,6 @@ public class Vfx : StateMachineBehaviour
             GameObject spell = Instantiate(spellVfx, new Vector3(midpoint.x, midpoint.y, midpoint.z + offset), Quaternion.identity);
 
             Destroy(spell, lifetime);
-            // var cp = capsule.transform.position;
-            // var obj = Instantiate(spellVfx, new Vector3(cp.x, height, cp.z + 2), capsule.transform.rotation);
-
         }
     }
 

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Invector.vCharacterController
 {
@@ -21,7 +23,12 @@ namespace Invector.vCharacterController
         [HideInInspector] public vThirdPersonController cc;
         [HideInInspector] public vThirdPersonCamera tpCamera;
         [HideInInspector] public Camera cameraMain;
-
+        
+        [CanBeNull] public Transform target;          // Цель, на которую будем поворачиваться
+        public float rotationSpeed = 5f;  // Скорость поворота
+        private bool isRotating = false;
+        
+        private Coroutine rotateCoroutine;
 
         public bool block = false;
         #endregion
@@ -41,11 +48,48 @@ namespace Invector.vCharacterController
 
         protected virtual void Update()
         {
+            if (target != null && !isRotating)
+            {
+                if (rotateCoroutine != null)
+                    StopCoroutine(rotateCoroutine); // Останавливаем предыдущую корутину (если есть)
+
+                rotateCoroutine = StartCoroutine(RotateTowardsTarget());
+            }
+            
             if (!block)
             {
                 InputHandle();                  // update the input methods
                 cc.UpdateAnimator();            // updates the Animator Parameters
             }
+        }
+
+        public virtual void SetRotateTarget(GameObject newTarget)
+        {
+            target = newTarget.transform;
+        }
+
+        IEnumerator RotateTowardsTarget()
+        {
+            isRotating = true;
+            Vector3 direction = target.position - transform.position;
+            direction.y = 0; // Убираем наклон вверх/вниз
+
+            if (direction.magnitude > 0.01f)
+            {
+                Quaternion startRotation = transform.rotation;
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                float t = 0;
+
+                while (t < 1)
+                {
+                    t += Time.deltaTime * rotationSpeed;
+                    transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
+                    yield return null;
+                }
+            }
+
+            target = null;
+            isRotating = false;
         }
 
         public virtual void OnAnimatorMove()

@@ -111,8 +111,11 @@ namespace SpellSystem.Views
                 Debug.Log($"- {property}");
             }
             
-            propertyApplier.ApplyPropertiesToObject(CurrentObject, properties.ToArray());
             uiController.CloseSpellPanel();
+            uiController.vThirdPersonInput.SetRotateTarget(CurrentObject.gameObject);
+            uiController.vThirdPersonInput.cc.Spell();
+            
+            propertyApplier.ApplyPropertiesToObject(CurrentObject, properties.ToArray());
         }
     }
 }
