@@ -1,6 +1,4 @@
-﻿using Inventory;
-using JetBrains.Annotations;
-using SpellSystem.Controllers;
+﻿using SpellSystem.Controllers;
 using SpellSystem.Data;
 using UnityEngine;
 
@@ -8,24 +6,21 @@ namespace SpellSystem
 {
     public class StudyableObject : MonoBehaviour
     {
-        public bool pickable; // можно ли положить в инвентарь
-        [CanBeNull] public string inventoryCode;
         public StudyItem itemData;
         public float maxStudyDistance = 5f;
     
         private UIController studySystem;
-        private GlobalInventory inventory;
         
         public bool Studed = false;
 
         private void Start()
         {
-            inventory = FindObjectOfType<GlobalInventory>();
             studySystem = FindObjectOfType<UIController>();
             if (studySystem == null)
             {
                 Debug.LogError("UIController not found in scene!");
             }
+            
         }
         
         public bool HasProperty(PropertyType propertyType)
@@ -198,12 +193,8 @@ namespace SpellSystem
                 }
             }
 
+            
         }
-
-        public void Pickup()
-        {
-            inventory.AddItem(inventoryCode);
-            Destroy(gameObject);
-        }
+        
     }
 }
