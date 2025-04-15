@@ -227,7 +227,7 @@ namespace SpellSystem
 
         public void StudyItem(StudyableObject studyableObject)
         {
-            PlayerProgress.Instance.AddStudiedItem(studyableObject.itemData);
+            PlayerProgress.Instance.AddStudiedItem(studyableObject.StartItemData);
             studyableObject.Studed = true;
             UpdateStudiedItemsUI();
         }
