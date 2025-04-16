@@ -1,8 +1,10 @@
 ﻿using DefaultNamespace;
+using DefaultNamespace.Common;
 using Invector.vCharacterController;
 using SpellSystem.Data;
 using SpellSystem.Views;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
@@ -14,6 +16,8 @@ namespace SpellSystem
         public Camera playerCamera;
         public float maxStudyDistance = 5f;
         public LayerMask studyableLayer;
+        
+        public PlayerSpellController PlayerSpellController;
 
         private StudyableObject currentObject;
         private bool wasPromptVisible = false;
@@ -39,14 +43,14 @@ namespace SpellSystem
         [SerializeField] private bool spellPanelOpened = false;
         
         [SerializeField] private PropertyDatabase propertyDatabase;
-        [SerializeField] private vThirdPersonCamera vThirdPersonCamera;
-        [SerializeField] public vThirdPersonInput vThirdPersonInput;
+        
+        [SerializeField] private SpellCreator _spellCreator ;
+
+        private PlayerInput _playerInput;
         
         private bool uiIsActive => spellPanelOpened || studiedObjectsPanelOpened;
         
         private bool centerDotOnCanSpellingObject = false;
-        
-        [SerializeField] private SpellCreator _spellCreator ;
         
         private void Start()
         {
@@ -62,7 +66,8 @@ namespace SpellSystem
             
             studiedObjectsPanel.gameObject.SetActive(false);
             spellPanel.gameObject.SetActive(false);
-            
+
+            _playerInput = GameManager.Instance.PlayerInput;
         }
 
         private void Update()
@@ -126,17 +131,17 @@ namespace SpellSystem
             {
                 Debug.Log("Enable UI, lock camera and input");
                 
+                _playerInput.SwitchCurrentActionMap("UI");
+                
                 CursorController.Instance.SetLookEnabled(true);
-                vThirdPersonCamera.lockCamera = true;
-                vThirdPersonInput.block = true;
             }
             else
             {
                 Debug.Log("Disable UI, unlock camera and input");
                 
+                _playerInput.SwitchCurrentActionMap("Player");
+                
                 CursorController.Instance.SetLookEnabled(false);
-                vThirdPersonCamera.lockCamera = false;
-                vThirdPersonInput.block = false;
             }
         }
 

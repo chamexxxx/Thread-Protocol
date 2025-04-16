@@ -9,19 +9,27 @@ namespace SpellSystem
         public StudyItem itemData;
         private StudyItem _startItemData;
         public float maxStudyDistance = 5f;
+
+        private Vector3 _initialScale;
+
+        public Vector3 InitialScale => _initialScale;
     
         private UIController studySystem;
+        
         public bool Studed = false;
         public StudyItem StartItemData => _startItemData;
-        
+
         private void Start()
         {
             studySystem = FindObjectOfType<UIController>();
             if (studySystem == null)
             {
                 Debug.LogError("UIController not found in scene!");
+                return;
             }
+
             _startItemData = new StudyItem(itemData);
+            _initialScale = transform.localScale;
         }
         
         public bool HasProperty(PropertyType propertyType)
@@ -108,6 +116,10 @@ namespace SpellSystem
                 case PropertyType.Large:
                     gameObject.AddComponent<LargePropertyController>();
                     break;
+                
+                case PropertyType.Small:
+                    gameObject.AddComponent<SmallPropertyController>();
+                    break;
             
                 case PropertyType.Frozen:
                     gameObject.AddComponent<FrozenPropertyController>();
@@ -158,6 +170,10 @@ namespace SpellSystem
         
                 case PropertyType.Large:
                     RemoveComponent<LargePropertyController>();
+                    break;
+                
+                case PropertyType.Small:
+                    RemoveComponent<SmallPropertyController>();
                     break;
         
                 case PropertyType.Frozen:

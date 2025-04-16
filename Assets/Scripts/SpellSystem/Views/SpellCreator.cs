@@ -116,13 +116,21 @@ namespace SpellSystem.Views
             }
             
             uiController.CloseSpellPanel();
-            uiController.vThirdPersonInput.SetRotateTarget(CurrentObject.gameObject);
             
+            uiController.PlayerSpellController.Spell(CurrentObject.transform, true);
+
+            uiController.PlayerSpellController.SpellSuccess += () =>
+            {
+                // тут должно быть применение свойств
+            };
+
             if (propertyApplier.TryApplyPropertiesToObject(CurrentObject, properties.ToArray()))
-                uiController.vThirdPersonInput.cc.SpellSuccess();
+            {
+                // uiController.vThirdPersonInput.cc.SpellSuccess();
+            }
             else
             {
-                uiController.vThirdPersonInput.cc.SpellFailure();
+                // uiController.vThirdPersonInput.cc.SpellFailure();
             }
             
         }

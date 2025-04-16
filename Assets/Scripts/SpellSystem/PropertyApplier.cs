@@ -25,14 +25,14 @@ namespace SpellSystem
             }
         }
 
-        private void ApplyObjectProperties(StudyableObject targetObject)
+        private void ApplyObjectProperties(StudyableObject studyableObject)
         {
-            if (targetObject.itemData == null || targetObject.itemData.Properties == null)
+            if (studyableObject.itemData == null || studyableObject.itemData.Properties == null)
                 return;
 
-            foreach (PropertyType propertyType in targetObject.itemData.Properties)
+            foreach (PropertyType propertyType in studyableObject.itemData.Properties)
             {
-                targetObject.CheckPropertyController(propertyType);
+                studyableObject.CheckPropertyController(propertyType);
             }
         }
 

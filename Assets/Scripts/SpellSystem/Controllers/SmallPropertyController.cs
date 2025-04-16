@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SpellSystem.Controllers
 {
-    public class LargePropertyController : MonoBehaviour, IPropertyController
+    public class SmallPropertyController : MonoBehaviour, IPropertyController
     {
         private StudyableObject _studyableObject;
         private float _scaleFactor = 2f;
@@ -25,13 +25,13 @@ namespace SpellSystem.Controllers
                 return;
             }
             
-            ScaleObjectRoutine(_studyableObject.InitialScale * _scaleFactor).Forget();
+            ScaleObjectRoutine(_studyableObject.InitialScale / _scaleFactor).Forget();
 
             _rigidbody = GetComponent<Rigidbody>();
 
             // if (_rigidbody != null)
             // {
-            //     _rigidbody.mass *= _scaleFactor * 2;
+            //     _rigidbody.mass *= _scaleFactor / 2;
             // }
         }
         
@@ -49,7 +49,7 @@ namespace SpellSystem.Controllers
                 
                 await UniTask.Yield();
             }
-
+            
             transform.localScale = finalScale;
         }
     }

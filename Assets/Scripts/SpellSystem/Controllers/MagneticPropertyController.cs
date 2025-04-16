@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpellSystem.Controllers;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class MagneticPropertyController : MonoBehaviour, IPropertyController
     
     private List<Rigidbody> attractedObjects = new List<Rigidbody>();
 
-    void Update()
+    private void Update()
     {
         if (!isActive) return;
 
