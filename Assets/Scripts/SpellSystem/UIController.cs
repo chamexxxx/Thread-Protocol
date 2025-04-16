@@ -1,5 +1,6 @@
 ﻿using DefaultNamespace;
 using DefaultNamespace.Common;
+using Player;
 using SpellSystem.Data;
 using SpellSystem.Views;
 using UnityEngine;
