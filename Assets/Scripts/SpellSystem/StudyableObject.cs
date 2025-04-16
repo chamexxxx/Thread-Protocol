@@ -7,12 +7,13 @@ namespace SpellSystem
     public class StudyableObject : MonoBehaviour
     {
         public StudyItem itemData;
+        private StudyItem _startItemData;
         public float maxStudyDistance = 5f;
     
         private UIController studySystem;
-        
         public bool Studed = false;
-
+        public StudyItem StartItemData => _startItemData;
+        
         private void Start()
         {
             studySystem = FindObjectOfType<UIController>();
@@ -20,7 +21,7 @@ namespace SpellSystem
             {
                 Debug.LogError("UIController not found in scene!");
             }
-            
+            _startItemData = new StudyItem(itemData);
         }
         
         public bool HasProperty(PropertyType propertyType)
