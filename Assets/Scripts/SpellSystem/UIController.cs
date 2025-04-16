@@ -1,6 +1,5 @@
 ﻿using DefaultNamespace;
 using DefaultNamespace.Common;
-using Invector.vCharacterController;
 using SpellSystem.Data;
 using SpellSystem.Views;
 using UnityEngine;
