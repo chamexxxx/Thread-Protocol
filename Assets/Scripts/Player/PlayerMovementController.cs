@@ -1,6 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace.Common;
+using SpellSystem;
+using SpellSystem.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +18,10 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float _moveSpeed = 1.5f;
     [SerializeField] private float _rotationSpeed = 5f;
     [SerializeField] private float _rotationThreshold = 1f;
+
+    [Header("Physics")]
+    [SerializeField] private float _weightLiftingLimit = 3f;
+    [SerializeField] private float _pushForce = .2f;
     
     private CharacterController _characterController;
     private Animator _animator;
@@ -73,6 +79,40 @@ public class PlayerMovementController : MonoBehaviour
             var targetRotation = Quaternion.LookRotation(move);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
         }
+    }
+    
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        var rb = hit.collider.attachedRigidbody;
+
+        if (rb == null || rb.isKinematic || rb.mass > _weightLiftingLimit)
+        {
+            return;
+        }
+
+        var studyableObject = rb.GetComponent<StudyableObject>();
+
+        if (studyableObject == null)
+        {
+            return;
+        }
+
+        if (!(studyableObject.HasProperty(PropertyType.Large) && studyableObject.HasProperty(PropertyType.Slippery)))
+        {
+            return;
+        }
+        
+        // Игнорируем толчки вверх и вниз
+        if (hit.moveDirection.y < -0.3f)
+        {
+            return;
+        }
+
+        // Направление толчка
+        var pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+
+        // Применяем силу
+        rb.linearVelocity = pushDir * _pushForce;
     }
 
     public async UniTask RotateToTarget(Transform target)
