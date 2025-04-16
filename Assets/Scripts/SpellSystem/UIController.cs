@@ -154,7 +154,14 @@ namespace SpellSystem
     
             if (Physics.Raycast(ray, out hit, maxStudyDistance, studyableLayer))
             {
-                StudyableObject studyable = hit.collider.GetComponent<StudyableObject>();
+                var hitObject = hit.collider.gameObject;
+                var studyable = hitObject.GetComponent<StudyableObject>();
+                
+                if (studyable == null)
+                {
+                    studyable = hitObject.GetComponentInParent<StudyableObject>();
+                }
+                
                 if (studyable != null)
                 {
                     centerDot.color = highlightColor;
