@@ -38,6 +38,12 @@ namespace Player
 
         private void Update()
         {
+            // Проверяем, проигрывается ли анимация "Spell"
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Spell"))
+            {
+                return;
+            }
+            
             var movementValue = _movementAction.ReadValue<Vector2>();
 
             // Направление по камере (без учёта высоты)
