@@ -2321,7 +2321,7 @@ GameObject:
   - component: {fileID: 709763431}
   - component: {fileID: 709763430}
   - component: {fileID: 709763429}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3618,7 +3618,7 @@ MonoBehaviour:
   itemData:
     ItemName: Key
     IsFeminine: 0
-    Properties: 01000000
+    Properties: 0100000004000000
   maxStudyDistance: 5
   Studed: 0
 --- !u!1 &1342427428
@@ -4063,7 +4063,7 @@ GameObject:
   - component: {fileID: 1420166019}
   - component: {fileID: 1420166023}
   - component: {fileID: 1420166022}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Banana Peel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4647,6 +4647,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 738252405}
     m_Modifications:
+    - target: {fileID: 265634429064854154, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 400608988874969064, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 718891052963627237, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057192257877002263, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2365248612779210113, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3501350762289917220, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085471333723475228, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258719901963034728, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289123339373541673, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343174567997698897, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4437502202436493632, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.57
@@ -4687,9 +4727,49 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5138412723465805325, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5798152576481251213, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5808085611163386986, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
       propertyPath: m_Name
       value: Door Frozen Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 5808085611163386986, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871015995841222751, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5891686195157797029, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5912633875167862861, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748793021001158442, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782040333422100618, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965743537234054591, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643581498292336564, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2254149196869909545, guid: 8fb6f8a5eca180d41a7b3a4e21ba7354, type: 3}
@@ -9070,15 +9150,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251054087588365631, guid: e3bb3ba0bc6e73a47a0a5ff791d1ae3b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.314
+      value: -0.912
       objectReference: {fileID: 0}
     - target: {fileID: 4251054087588365631, guid: e3bb3ba0bc6e73a47a0a5ff791d1ae3b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.799
+      value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: 4251054087588365631, guid: e3bb3ba0bc6e73a47a0a5ff791d1ae3b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -21.039
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4251054087588365631, guid: e3bb3ba0bc6e73a47a0a5ff791d1ae3b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10254,8 +10334,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273488921104800382}
   serializedVersion: 2
-  m_LocalRotation: {x: -4.292036e-11, y: 0.14879887, z: 3.9692156e-12, w: 0.9888675}
-  m_LocalPosition: {x: 18.466022, y: -0.64892554, z: -21.871065}
+  m_LocalRotation: {x: -0.000000010596428, y: 0.14879893, z: 0.000000001417172, w: 0.9888675}
+  m_LocalPosition: {x: -0.75997615, y: 1.1620744, z: -0.93206584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10601,7 +10681,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00077049265}
+  m_AnchoredPosition: {x: 0, y: 0.0009601727}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &4198934755117342966
@@ -14780,8 +14860,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5333085455621142936}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.000000014735335, y: 0.14879891, z: 0.0000000022172855, w: 0.9888675}
-  m_LocalPosition: {x: 18.466022, y: -0.64892554, z: -21.871065}
+  m_LocalRotation: {x: -0.000000010570339, y: 0.14879896, z: 0.0000000015905622, w: 0.9888675}
+  m_LocalPosition: {x: -0.75997615, y: 1.1620744, z: -0.93206584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14800,11 +14880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   studyPromptUI: {fileID: 1966183470002311244}
-  playerCamera: {fileID: 4266352175381423165}
-  maxStudyDistance: 60
-  studyableLayer:
-    serializedVersion: 2
-    m_Bits: 4294967295
   PlayerSpellController: {fileID: 2410686185824390611}
   centerDot: {fileID: 8539923068191388997}
   highlightColor: {r: 1, g: 1, b: 1, a: 0.8392157}
