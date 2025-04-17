@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private readonly List<InventoryItem> _inventoryItems = new ();
+    [SerializeField] private List<InventoryItem> _inventoryItems = new ();
 
     public void AddInventoryItem(InventoryItem inventoryItem)
     {

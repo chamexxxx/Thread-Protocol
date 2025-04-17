@@ -114,6 +114,24 @@ namespace SpellSystem
                     }
                 }
                 
+                // if inventory item, нажмите f, чтобы подобрать предмет
+
+                var inventoryItem = studyableObject.GetComponent<InventoryItem>();
+
+                if (inventoryItem != null)
+                {
+                    var propertyViewInventoryItem = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                    propertyViewInventoryItem.Name.text = $"[F] Подобрать";
+                }
+
+                var inventoryItemReceiver = studyableObject.GetComponent<InventoryItemReceiver>();
+
+                if (inventoryItemReceiver != null)
+                {
+                    var propertyViewInventoryItemReceiver = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                    propertyViewInventoryItemReceiver.Name.text = $"[F] Применить";
+                }
+                
                 // TODO тут моя проверка
             }
             else
@@ -178,6 +196,23 @@ namespace SpellSystem
                 else if (isStudying)
                 {
                     FinishStudy();
+                }
+
+                if (Input.GetKeyDown(KeyCode.F) && currentObject.Studed)
+                {
+                    var inventoryItem = currentObject.GetComponent<InventoryItem>();
+
+                    if (inventoryItem != null)
+                    {
+                        inventoryItem.AddToInventory();
+                    }
+
+                    var inventoryItemReceiver = currentObject.GetComponent<InventoryItemReceiver>();
+
+                    if (inventoryItemReceiver != null)
+                    {
+                        inventoryItemReceiver.TryActivate();
+                    }
                 }
             }
             

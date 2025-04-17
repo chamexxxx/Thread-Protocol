@@ -4,6 +4,8 @@ using UnityEngine;
 public class InventoryItemReceiver : MonoBehaviour
 {
     public bool IsActivated => _isActivated;
+
+    public event Action Activated;
     
     [SerializeField] private InventoryItem _inventoryItem;
 
@@ -27,6 +29,7 @@ public class InventoryItemReceiver : MonoBehaviour
         if (success)
         {
             _isActivated = true;
+            Activated?.Invoke();
         }
 
         return success;
