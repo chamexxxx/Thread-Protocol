@@ -69,6 +69,10 @@ namespace SpellSystem.Views
             List<string> propertyNames = new();
             foreach (var type in uniqueTypes)
             {
+                // Пропускаем, если у объекта уже есть это свойство
+                if (CurrentObject.HasProperty(type))
+                    continue;
+                
                 var info = _propertyDatabase.GetPropertyInfo(type);
                 if (info != null)
                 {
