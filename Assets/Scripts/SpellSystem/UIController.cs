@@ -169,7 +169,7 @@ namespace SpellSystem
                     if (currentObject.Studed)
                     {
                         centerDotOnCanSpellingObject = true;
-                        _spellCreator.CurrentObject = currentObject;
+                        _spellCreator.SetCurrentObject(currentObject);
                         
                         var propertyViewHeader = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
                         propertyViewHeader.Name.text = $"[{studyable.itemData.ItemName}]";
@@ -193,7 +193,7 @@ namespace SpellSystem
                     else
                     {
                         centerDotOnCanSpellingObject = false;
-                        _spellCreator.CurrentObject = null;
+                        _spellCreator.SetCurrentObject(null);
                             
                         var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
                         propertyView.Name.text = $"[E] Изучить [{studyable.itemData.ItemName}]";
@@ -206,14 +206,14 @@ namespace SpellSystem
                 else
                 {
                     centerDotOnCanSpellingObject = false;
-                    _spellCreator.CurrentObject = null;
+                    _spellCreator.SetCurrentObject(null);
                     centerDot.color = originalDotColor;
                 }
             }
             else
             {
                 centerDotOnCanSpellingObject = false;
-                _spellCreator.CurrentObject = null;
+                _spellCreator.SetCurrentObject(null);
                 centerDot.color = originalDotColor;
             }
 
