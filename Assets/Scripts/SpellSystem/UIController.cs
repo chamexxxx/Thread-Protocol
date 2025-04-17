@@ -6,6 +6,7 @@ using SpellSystem.Views;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace SpellSystem
@@ -29,6 +30,14 @@ namespace SpellSystem
         [SerializeField] private GameObject propertyViewPrefab;
         [SerializeField] private GameObject dividerViewPrefab;
         [SerializeField] private GameObject simpleLineViewPrefab;
+        
+        [Header("Progress bar settings")]
+        [SerializeField] private Image studyProgressBar;
+        // время полного изучения (сек)
+        [SerializeField] private float studyTime = 2f;
+
+        private float studyTimer;      // текущий счётчик
+        private bool  isStudying;      // идёт ли процесс удержания
         
         [SerializeField] private Transform eStadyItemsParent;
         
@@ -121,6 +130,7 @@ namespace SpellSystem
 
         private void OnStudyableObjectLost()
         {
+            FinishStudy();
             if (uiIsActive)
             {
                 return;
@@ -139,11 +149,36 @@ namespace SpellSystem
 
         private void Update()
         {
-            if (currentObject != null && Input.GetKeyDown(KeyCode.E))
+            if (currentObject != null)
             {
-                StudyItem(currentObject);
-                studyPromptUI.SetActive(false);
-                currentObject = null;
+                // Кнопка удерживается
+                if (Input.GetKey(KeyCode.E) && !currentObject.Studed)
+                {
+                    // первый кадр удержания
+                    if (!isStudying)
+                    {
+                        isStudying = true;
+                        studyTimer = 0f;
+                        studyProgressBar.fillAmount = 0f;
+                        studyProgressBar.gameObject.SetActive(true);
+                    }
+
+                    // «крутим» счётчик
+                    studyTimer += Time.deltaTime;
+                    studyProgressBar.fillAmount = studyTimer / studyTime;
+
+                    // достигли порога – предмет изучен
+                    if (studyTimer >= studyTime)
+                    {
+                        StudyItem(currentObject);
+                        FinishStudy();          // сброс UI
+                    }
+                }
+                // Кнопку отпустили раньше времени – сброс
+                else if (isStudying)
+                {
+                    FinishStudy();
+                }
             }
             
             if (Input.GetKeyDown(KeyCode.I))
@@ -179,9 +214,18 @@ namespace SpellSystem
                 CloseSpellPanel();
             }
         }
+        
+        private void FinishStudy()
+        {
+            isStudying = false;
+            studyTimer = 0f;
+            studyProgressBar.gameObject.SetActive(false);
+        }
+
 
         public void CloseSpellPanel()
         {
+            FinishStudy();
             spellPanelOpened = false;
             spellPanel.gameObject.SetActive(spellPanelOpened);
 
