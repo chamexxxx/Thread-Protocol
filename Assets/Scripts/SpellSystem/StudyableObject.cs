@@ -6,6 +6,8 @@ namespace SpellSystem
 {
     public class StudyableObject : MonoBehaviour
     {
+        [SerializeField] private bool _constrained = false;
+        
         public StudyItem itemData;
         private StudyItem _startItemData;
         public float maxStudyDistance = 5f;
@@ -17,6 +19,7 @@ namespace SpellSystem
         private UIController studySystem;
         
         public bool Studed = false;
+        public bool Constrained => _constrained;
         public StudyItem StartItemData => _startItemData;
 
         private PropertyControllerAttacher _propertyControllerAttacher;

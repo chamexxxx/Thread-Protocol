@@ -24,6 +24,12 @@ namespace SpellSystem.Controllers
                 enabled = false;
                 return;
             }
+
+            // TODO: перенести логику в property applier
+            if (_studyableObject.Constrained)
+            {
+                return;
+            }
             
             ScaleObjectRoutine(_studyableObject.InitialScale * _scaleFactor).Forget();
 
