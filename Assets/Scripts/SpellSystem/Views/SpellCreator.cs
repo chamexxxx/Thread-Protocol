@@ -2,119 +2,209 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Common;
+using Cysharp.Threading.Tasks;
+using SpellSystem.Data;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace SpellSystem.Views
 {
     public class SpellCreator : MonoBehaviour
     {
         [Header("References")]
-        //public TMP_InputField titleInput; // Поле для названия предмета
-        public Transform propertiesLayout; // Layout группа для свойств
-        public TMP_InputField propertyInput; // Поле для ввода нового свойства
-        public Button addPropertyButton; // Кнопка добавления свойства
-        public Button bindButton; // Кнопка "Связать"
-        public GameObject propertyPrefab; // Префаб элемента свойства
+        public Transform propertiesLayout;
+        public TMP_InputField propertyInput;
 
-        private List<string> properties = new List<string>(); // Список свойств
-        private List<GameObject> propertyInstances = new List<GameObject>(); // Список экземпляров свойств
+        [SerializeField] private PlayerProgress _playerProgress;
+        [SerializeField] private PropertyDatabase _propertyDatabase;
+
+        public SearchDropdown propertySearchDropdown;
+
+        public Button addPropertyButton;
+        public Button bindButton;
+        public GameObject propertyPrefab;
+
+        public GameObject focusRedirectTarget; // 👈 перетаскивается в инспекторе
+
+        private List<string> properties = new();
+        private List<GameObject> propertyInstances = new();
+        private List<string> availableProperties = new();
 
         [SerializeField] private PropertyApplier propertyApplier;
         [SerializeField] private UIController uiController;
-        
+
         [HideInInspector] public StudyableObject CurrentObject;
+
         void Start()
         {
-            // Назначаем обработчики кнопок
             addPropertyButton.onClick.AddListener(AddProperty);
             bindButton.onClick.AddListener(BindSpell);
         }
 
-        // Отчищение всего
+        private void SetupSearchDropdown()
+        {
+            if (CurrentObject == null || CurrentObject.StartItemData == null)
+            {
+                availableProperties = new List<string>();
+                propertySearchDropdown.SetItems(availableProperties);
+                propertyInput.text = string.Empty;
+                return;
+            }
+
+            bool isFeminine = CurrentObject.StartItemData.IsFeminine;
+
+            HashSet<PropertyType> uniqueTypes = new();
+
+            foreach (var item in _playerProgress.studiedItems)
+            {
+                if (item?.Properties == null) continue;
+
+                foreach (var prop in item.Properties)
+                {
+                    uniqueTypes.Add(prop);
+                }
+            }
+
+            List<string> propertyNames = new();
+            foreach (var type in uniqueTypes)
+            {
+                // Пропускаем, если у объекта уже есть это свойство
+                if (CurrentObject.HasProperty(type))
+                    continue;
+                
+                var info = _propertyDatabase.GetPropertyInfo(type);
+                if (info != null)
+                {
+                    string name = isFeminine ? info.DisplayFeminineName : info.DisplayName;
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        propertyNames.Add(name);
+                    }
+                }
+            }
+
+            propertyNames.Sort();
+            availableProperties = propertyNames;
+            propertySearchDropdown.SetItems(availableProperties);
+
+            propertySearchDropdown.OnItemSelected.RemoveAllListeners();
+            propertySearchDropdown.OnItemSelected.AddListener(value =>
+            {
+                propertyInput.text = value;
+                AddProperty();
+                propertySearchDropdown.HideList();
+            });
+        }
+
+        public void SetCurrentObject(StudyableObject obj)
+        {
+            if (CurrentObject != obj)
+            {
+                CurrentObject = obj;
+                SetupSearchDropdown();
+            }
+        }
+
         public void ClearFields()
         {
-            propertyInput.text = String.Empty;
-            
+            propertyInput.text = string.Empty;
             properties.Clear();
-            
+
             foreach (var property in propertyInstances)
             {
                 Destroy(property);
             }
+
+            propertyInstances.Clear();
         }
 
-        // Добавление нового свойства
         void AddProperty()
         {
-            Debug.Log("AddProperty");
             string property = propertyInput.text.Trim();
-            Debug.Log("property: " + property);
-            if (!string.IsNullOrEmpty(property) && propertyPrefab != null)
+            if (!string.IsNullOrEmpty(property) &&
+                propertyPrefab != null &&
+                !properties.Contains(property))
             {
-                Debug.Log("yes");
                 properties.Add(property);
                 CreatePropertyUIElement(property);
-                propertyInput.text = ""; // Очищаем поле ввода
+                propertyInput.text = "";
+
+                availableProperties.Remove(property);
+                propertySearchDropdown.SetItems(availableProperties);
             }
         }
 
-        // Создание UI элемента для свойства из префаба
         void CreatePropertyUIElement(string property)
         {
-            // Создаем экземпляр префаба
             GameObject propertyElement = Instantiate(propertyPrefab, propertiesLayout);
             propertyElement.name = "Property_" + property;
-            
-            // Находим компоненты в префабе
+
             TMP_Text propertyText = propertyElement.GetComponentInChildren<TMP_Text>();
             Button removeButton = propertyElement.GetComponentInChildren<Button>();
-            
+
             if (propertyText != null)
             {
                 propertyText.text = property;
             }
-            
+
             if (removeButton != null)
             {
-                // Добавляем обработчик удаления
                 removeButton.onClick.AddListener(() => RemoveProperty(property, propertyElement));
             }
-            
+
             propertyInstances.Add(propertyElement);
         }
 
-        // Удаление свойства
         void RemoveProperty(string property, GameObject propertyElement)
         {
-            // Удаляем из списка свойств
-            properties.Remove(property);
-            
-            // Удаляем из списка экземпляров и уничтожаем GameObject
+            if (EventSystem.current.currentSelectedGameObject == propertyElement)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
+
+            if (properties.Contains(property))
+            {
+                properties.Remove(property);
+                availableProperties.Add(property);
+                availableProperties.Sort();
+                propertySearchDropdown.SetItems(availableProperties);
+            }
+
             if (propertyInstances.Contains(propertyElement))
             {
                 propertyInstances.Remove(propertyElement);
-                Destroy(propertyElement);
+                // Задержка на 1 кадр перед Destroy
+                DestroyDelayed(propertyElement).Forget();
             }
+            propertySearchDropdown.HideList();
+            EventSystem.current.SetSelectedGameObject(null);
+            propertySearchDropdown.inputField.DeactivateInputField();
         }
 
-        // Обработка кнопки "Связать"
+        private async UniTaskVoid DestroyDelayed(GameObject go)
+        {
+            await UniTask.NextFrame();
+            Destroy(go);
+        }
+
         void BindSpell()
         {
-            if (CurrentObject ==null)
+            if (CurrentObject == null)
             {
                 Debug.LogWarning("Предмет не может быть пустым!");
                 uiController.CloseSpellPanel();
                 return;
             }
-            
+
             Debug.Log($"Создание заклинания: {CurrentObject.itemData.ItemName}");
             Debug.Log("Список свойств:");
-            
+
             foreach (string property in properties)
             {
                 Debug.Log($"- {property}");
             }
-            
+
             uiController.CloseSpellPanel();
             
             uiController.PlayerSpellController.Spell(CurrentObject.transform, true);
