@@ -13,14 +13,10 @@ namespace SpellSystem
     public class UIController : MonoBehaviour
     {
         public GameObject studyPromptUI;
-        public Camera playerCamera;
-        public float maxStudyDistance = 5f;
-        public LayerMask studyableLayer;
         
         public PlayerSpellController PlayerSpellController;
 
         private StudyableObject currentObject;
-        private bool wasPromptVisible = false;
 
         public Image centerDot;
         [SerializeField] public Color highlightColor = Color.green;
@@ -46,6 +42,8 @@ namespace SpellSystem
         
         [SerializeField] private SpellCreator _spellCreator ;
 
+        [SerializeField] private StudyableObjectRaycaster _studyableObjectRaycaster;
+
         private PlayerInput _playerInput;
         
         private bool uiIsActive => spellPanelOpened || studiedObjectsPanelOpened;
@@ -59,21 +57,88 @@ namespace SpellSystem
             studyPromptUI.SetActive(false);
             UpdateStudiedItemsUI();
             
-            if (playerCamera == null)
-            {
-                playerCamera = Camera.main;
-            }
-            
             studiedObjectsPanel.gameObject.SetActive(false);
             spellPanel.gameObject.SetActive(false);
 
             _playerInput = GameManager.Instance.PlayerInput;
+
+            _studyableObjectRaycaster.StudyableObjectFound += OnStudyableObjectFound;
+            _studyableObjectRaycaster.StudyableObjectLost += OnStudyableObjectLost;
+        }
+
+        private void OnStudyableObjectFound(StudyableObject studyableObject)
+        {
+            if (uiIsActive)
+            {
+                return;
+            }
+            
+            centerDot.color = highlightColor;
+                    
+            currentObject = studyableObject;
+
+            foreach (Transform child in eStadyItemsParent)
+            {
+                Destroy(child.gameObject);
+            }
+
+            if (currentObject.Studed)
+            {
+                centerDotOnCanSpellingObject = true;
+                _spellCreator.CurrentObject = currentObject;
+                
+                var propertyViewHeader = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                propertyViewHeader.Name.text = $"[{studyableObject.itemData.ItemName}]";
+                
+                foreach (var property in currentObject.itemData.Properties)
+                {
+                    var propertyInfo = GetPropertyInfo(property);
+                    var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+
+                    if (currentObject.itemData.IsFeminine)
+                    {
+                        propertyView.Name.text = $"  * {propertyInfo.DisplayFeminineName}";
+                    }
+                    else
+                    {
+                        propertyView.Name.text = $"  * {propertyInfo.DisplayName}";
+                    }
+                }
+                
+                // TODO тут моя проверка
+            }
+            else
+            {
+                centerDotOnCanSpellingObject = false;
+                _spellCreator.CurrentObject = null;
+                    
+                var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
+                propertyView.Name.text = $"[E] Изучить [{studyableObject.itemData.ItemName}]";
+            }
+            
+            studyPromptUI.SetActive(true);
+        }
+
+        private void OnStudyableObjectLost()
+        {
+            if (uiIsActive)
+            {
+                return;
+            }
+            
+            centerDotOnCanSpellingObject = false;
+            _spellCreator.CurrentObject = null;
+            centerDot.color = originalDotColor;
+            
+            if (studyPromptUI.activeSelf)
+            {
+                studyPromptUI.SetActive(false);
+                currentObject = null;
+            }
         }
 
         private void Update()
         {
-            CheckForStudyableObjects();
-            
             if (currentObject != null && Input.GetKeyDown(KeyCode.E))
             {
                 StudyItem(currentObject);
@@ -148,93 +213,6 @@ namespace SpellSystem
         private void DisableActions()
         {
             
-        }
-
-        private void CheckForStudyableObjects()
-        {
-            if (uiIsActive) return;
-            
-            Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            RaycastHit hit;
-    
-            if (Physics.Raycast(ray, out hit, maxStudyDistance, studyableLayer))
-            {
-                var hitObject = hit.collider.gameObject;
-                var studyable = hitObject.GetComponent<StudyableObject>();
-                
-                if (studyable == null)
-                {
-                    studyable = hitObject.GetComponentInParent<StudyableObject>();
-                }
-                
-                if (studyable != null)
-                {
-                    centerDot.color = highlightColor;
-                    
-                    currentObject = studyable;
-
-                    foreach (Transform child in eStadyItemsParent)
-                    {
-                        Destroy(child.gameObject);
-                    }
-
-                    if (currentObject.Studed)
-                    {
-                        centerDotOnCanSpellingObject = true;
-                        _spellCreator.CurrentObject = currentObject;
-                        
-                        var propertyViewHeader = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
-                        propertyViewHeader.Name.text = $"[{studyable.itemData.ItemName}]";
-                        foreach (var property in currentObject.itemData.Properties)
-                        {
-                            var propertyInfo = GetPropertyInfo(property);
-                            var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
-
-                            if (currentObject.itemData.IsFeminine)
-                            {
-                                propertyView.Name.text = $"  * {propertyInfo.DisplayFeminineName}";
-                            }
-                            else
-                            {
-                                propertyView.Name.text = $"  * {propertyInfo.DisplayName}";
-                            }
-                            
-                        }
-                        // TODO тут моя проверка
-                    }
-                    else
-                    {
-                        centerDotOnCanSpellingObject = false;
-                        _spellCreator.CurrentObject = null;
-                            
-                        var propertyView = Instantiate(simpleLineViewPrefab, eStadyItemsParent).GetComponent<PropertyView>();
-                        propertyView.Name.text = $"[E] Изучить [{studyable.itemData.ItemName}]";
-                    }
-                    
-                    studyPromptUI.SetActive(true);
-                    wasPromptVisible = true;
-                    return;
-                }
-                else
-                {
-                    centerDotOnCanSpellingObject = false;
-                    _spellCreator.CurrentObject = null;
-                    centerDot.color = originalDotColor;
-                }
-            }
-            else
-            {
-                centerDotOnCanSpellingObject = false;
-                _spellCreator.CurrentObject = null;
-                centerDot.color = originalDotColor;
-            }
-
-            if (wasPromptVisible)
-            {
-                studyPromptUI.SetActive(false);
-                currentObject = null;
-                wasPromptVisible = false;
-            }
         }
 
         public void StudyItem(StudyableObject studyableObject)
