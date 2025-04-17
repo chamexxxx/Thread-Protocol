@@ -6100,11 +6100,7 @@ MonoBehaviour:
   impulseStrength: 0.5
   baseRotationStrength: 1
   additionalRotationStrength: 1
-  _impulseTargets:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _impulseTargets: []
 --- !u!1 &2027036369
 GameObject:
   m_ObjectHideFlags: 0
@@ -9798,7 +9794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0009904377}
+  m_AnchoredPosition: {x: 0, y: 0.00003539237}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &4198934755117342966
@@ -10865,7 +10861,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4198934755117342966}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999954
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
