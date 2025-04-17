@@ -44,7 +44,10 @@ namespace SpellSystem.Controllers
         private void OnDestroy()
         {
             // Сбрасываем все материалы на стандартные
-            if (_renderers == null) return;
+            if (_renderers == null)
+            {
+                return;
+            }
 
             foreach (Renderer rend in _renderers)
             {

@@ -29,10 +29,5 @@ namespace SpellSystem.Controllers
                 Debug.LogError("Физический материал не найден в папке Resources!");
             }
         }
-        
-        private void OnDestroy()
-        {
-            // сбрасываем все установленные значения
-        }
     }
 }
