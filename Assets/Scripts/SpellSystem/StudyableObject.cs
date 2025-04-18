@@ -1,4 +1,5 @@
-﻿using SpellSystem.Controllers;
+﻿using System;
+using SpellSystem.Controllers;
 using SpellSystem.Data;
 using UnityEngine;
 
@@ -24,6 +25,13 @@ namespace SpellSystem
 
         private PropertyControllerAttacher _propertyControllerAttacher;
 
+        private void Awake()
+        {
+            _propertyControllerAttacher = GetComponent<PropertyControllerAttacher>();
+            
+            Debug.Log(gameObject.name + " - " + _propertyControllerAttacher);
+        }
+
         private void Start()
         {
             studySystem = FindObjectOfType<UIController>();
@@ -35,13 +43,6 @@ namespace SpellSystem
 
             _startItemData = new StudyItem(itemData);
             _initialScale = transform.localScale;
-
-            _propertyControllerAttacher = GetComponent<PropertyControllerAttacher>();
-
-            if (_propertyControllerAttacher == null)
-            {
-                _propertyControllerAttacher = gameObject.AddComponent<PropertyControllerAttacher>();
-            }
         }
         
         public bool HasProperty(PropertyType propertyType)
