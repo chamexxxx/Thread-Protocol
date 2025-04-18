@@ -30,6 +30,6 @@ public class AudioEndEvent : MonoBehaviour
     {
         Debug.Log("Аудио закончилось!");
         
-        SceneManager.LoadScene("Room 3", LoadSceneMode.Single);
+        SceneManager.LoadScene("Art", LoadSceneMode.Single);
     }
 }
