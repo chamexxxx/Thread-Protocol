@@ -55,8 +55,6 @@ namespace SpellSystem
 
         public void CheckPropertyController(PropertyType propertyType)
         {
-            Debug.Log("_propertyControllerAttacher: " + _propertyControllerAttacher);
-            
             _propertyControllerAttacher.AddPropertyController(propertyType);
         }
 

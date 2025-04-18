@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using SpellSystem;
 using UnityEngine;
 
 public class WaterController : MonoBehaviour
@@ -11,24 +13,28 @@ public class WaterController : MonoBehaviour
     private Material originalMaterial; // Сохранение оригинального материала
     private Collider waterCollider;
     private Renderer waterRenderer;
+    private StudyableObject _studyableObject;
 
-    void Start()
+    private void Start()
     {
+        _studyableObject = GetComponent<StudyableObject>();
+        
         waterCollider = GetComponent<Collider>();
         waterRenderer = GetComponent<Renderer>();
         if (waterRenderer != null)
         {
             originalMaterial = waterRenderer.material;
         }
-        UpdateWaterState();
+        
+        // UpdateWaterState();
     }
 
-    void OnValidate()
+    private void OnValidate()
     {
         UpdateWaterState();
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -36,25 +42,45 @@ public class WaterController : MonoBehaviour
         }
     }
 
-    public void TeleportPlayer()
+    private async UniTask TeleportPlayer()
     {
-        if (teleportTarget != null && player != null)
+        Debug.Log("TeleportPlayer 1");
+        
+        if (teleportTarget == null || player == null)
         {
-            Animator animator = player.GetComponent<Animator>();
-            if (animator != null)
-            {
-                animator.enabled = false; // Останавливаем анимации
-            }
+            return;
+        }
+        
+        Debug.Log("TeleportPlayer 2");
+        
+        var animator = player.GetComponent<Animator>();
+            
+        if (animator != null)
+        {
+            animator.enabled = false; // Останавливаем анимации
+        }
 
-            Rigidbody rb = player.GetComponent<Rigidbody>();
+        var rb = player.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
             rb.linearVelocity = Vector3.zero;
             rb.position = teleportTarget.position;
-            player.transform.position = teleportTarget.position;
+        }
 
-            if (animator != null)
-            {
-                animator.enabled = true; // Включаем анимации обратно
-            }
+        var characterController = player.GetComponent<CharacterController>();
+        
+        await UniTask.Delay(500);
+
+        characterController.enabled = false;
+        
+        player.transform.position = teleportTarget.position;
+
+        characterController.enabled = true;
+
+        if (animator != null)
+        {
+            animator.enabled = true; // Включаем анимации обратно
         }
     }
 

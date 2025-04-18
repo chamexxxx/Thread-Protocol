@@ -23,8 +23,6 @@ namespace SpellSystem
         
         public void AddPropertyController(PropertyType propertyType)
         {
-            Debug.Log("AddPropertyController: " + propertyType);
-            
             if (_controllers.TryGetValue(propertyType, out Type controllerType))
             {
                 if (gameObject.GetComponent(controllerType) == null)

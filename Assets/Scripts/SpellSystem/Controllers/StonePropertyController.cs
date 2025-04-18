@@ -8,9 +8,17 @@ namespace SpellSystem.Controllers
 
         private Renderer[] _renderers;
         private Material _defaultMaterial;
+        private Collider _collider;
+        private bool _isTrigger;
 
         private void Start()
         {
+            _collider = GetComponent<Collider>();
+
+            _isTrigger = _collider.isTrigger;
+
+            _collider.isTrigger = false;
+            
             // Получаем все Renderer у объекта и его детей
             _renderers = GetComponentsInChildren<Renderer>();
 
@@ -42,6 +50,11 @@ namespace SpellSystem.Controllers
         
         private void OnDestroy()
         {
+            if (_collider != null && _isTrigger)
+            {
+                _collider.isTrigger = true;
+            }
+            
             // Сбрасываем все материалы на стандартные
             if (_renderers == null)
             {
