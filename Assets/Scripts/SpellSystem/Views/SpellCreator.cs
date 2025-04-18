@@ -35,11 +35,20 @@ namespace SpellSystem.Views
         [SerializeField] private UIController uiController;
 
         [HideInInspector] public StudyableObject CurrentObject;
+        
+        [HideInInspector] public StudyableObject SpellingObject;
+        
+        
 
         void Start()
         {
             addPropertyButton.onClick.AddListener(AddProperty);
             bindButton.onClick.AddListener(BindSpell);
+            
+            uiController.PlayerSpellController.SpellSuccess += () =>
+            {
+                propertyApplier.TryApplyPropertiesToObject(SpellingObject, properties.ToArray());
+            };
         }
 
         private void SetupSearchDropdown()
@@ -206,21 +215,15 @@ namespace SpellSystem.Views
             }
 
             uiController.CloseSpellPanel();
-            
-            uiController.PlayerSpellController.Spell(CurrentObject.transform, true);
 
-            uiController.PlayerSpellController.SpellSuccess += () =>
+            if (propertyApplier.CheckIfCanApplyPropertiesToObject(CurrentObject, properties.ToArray()))
             {
-                // тут должно быть применение свойств
-            };
-
-            if (propertyApplier.TryApplyPropertiesToObject(CurrentObject, properties.ToArray()))
-            {
-                // uiController.vThirdPersonInput.cc.SpellSuccess();
+                SpellingObject = CurrentObject;
+                uiController.PlayerSpellController.Spell(CurrentObject.transform, true);
             }
             else
             {
-                // uiController.vThirdPersonInput.cc.SpellFailure();
+                uiController.PlayerSpellController.Spell(CurrentObject.transform, false);
             }
             
         }

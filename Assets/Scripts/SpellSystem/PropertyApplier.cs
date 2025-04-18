@@ -65,6 +65,54 @@ namespace SpellSystem
             return results.All(r => r);
         }
         
+        public bool CheckIfCanApplyPropertiesToObject(StudyableObject studyableObject, string[] propertyNames)
+        {
+            if (studyableObject == null || propertyNames == null || propertyNames.Length == 0)
+                return false;
+
+            // Проверка на антонимы среди переданных свойств
+            for (int i = 0; i < propertyNames.Length; i++)
+            {
+                var prop1 = GetPropertyInfoByName(propertyNames[i]);
+                if (prop1 == null) continue;
+
+                for (int j = i + 1; j < propertyNames.Length; j++)
+                {
+                    var prop2 = GetPropertyInfoByName(propertyNames[j]);
+                    if (prop2 == null) continue;
+
+                    if (_propertyDatabase.AreAntonyms(prop1.Type, prop2.Type))
+                    {
+                        Debug.LogError($"Конфликт свойств: '{prop1.DisplayName}' и '{prop2.DisplayName}' являются антонимами!");
+                        return false;
+                    }
+                }
+            }
+            
+            // Проверка, можно ли применить каждое свойство к объекту
+            foreach (string propertyName in propertyNames)
+            {
+                var propInfo = GetPropertyInfoByName(propertyName);
+                if (propInfo == null)
+                {
+                    Debug.LogWarning($"Свойство '{propertyName}' не найдено в базе данных.");
+                    return false;
+                }
+
+                // Не даём повторно применять уже существующее свойство
+                if (studyableObject.HasProperty(propInfo.Type))
+                {
+                    Debug.LogWarning($"Свойство '{propertyName}' уже применено к объекту.");
+                    return false;
+                }
+
+                // Здесь можно добавить доп. проверки (если нужны)
+            }
+
+            return true;
+        }
+
+        
         private PropertyDatabase.PropertyInfo GetPropertyInfoByName(string name)
         {
             return _propertyDatabase.AllProperties
